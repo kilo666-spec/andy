@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
-    <title>一号店首页</title>
+    <title>Home page of Andy's Store</title>
     <style>
         * {
             margin: 0;
@@ -79,9 +79,10 @@
         .nav-icon {
             width: 40px;
             height: 40px;
-            background: #ffefe7;
             border-radius: 50%;
-            margin: 0 auto 5px
+            margin: 0 auto 5px;
+            object-fit: cover;
+            display: block;
         }
 
         /* 商品 */
@@ -185,6 +186,7 @@
             width: 100%;
             height: 300px;
             object-fit: cover;
+            cursor: pointer;
         }
 
         .detail-info {
@@ -204,6 +206,26 @@
             color: #ff5000;
             font-weight: bold;
         }
+
+        /* 大图弹窗 */
+        .img-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-img {
+            max-width: 95%;
+            max-height: 95vh;
+            object-fit: contain;
+        }
     </style>
 </head>
 
@@ -211,7 +233,7 @@
 
     <!-- 首页 -->
     <div class="page active" id="home">
-        <div class="top">一号店</div>
+        <div class="top">Andy's Store</div>
 
         <div class="swiper">
             <img src="./img/哈士奇.jpg" alt="" class="slide active">
@@ -220,34 +242,84 @@
         </div>
 
         <div class="nav">
-            <a class="nav-item" onclick="goCat('女装')">
-                <div class="nav-icon"></div>女装
+            <a class="nav-item" onclick="goCat('Clothing')">
+                <img class="nav-icon" src="./img/衣服1.png">
+                Clothing
             </a>
-            <a class="nav-item" onclick="goCat('包包')">
-                <div class="nav-icon"></div>包包
+            <a class="nav-item" onclick="goCat('Bag')">
+                <img class="nav-icon" src="./img/包包.png">
+                Bag
             </a>
-            <a class="nav-item" onclick="goCat('精品')">
-                <div class="nav-icon"></div>精品
+            <a class="nav-item" onclick="goCat('jewelry')">
+                <img class="nav-icon" src="./img/精品.png">
+                Fine jewelry
             </a>
-            <a class="nav-item" onclick="goCat('帽子')">
-                <div class="nav-icon"></div>帽子
+            <a class="nav-item" onclick="goCat('Hat')">
+                <img class="nav-icon" src="./img/鸭舌帽.png">
+                Hat
             </a>
-            <a class="nav-item" onclick="goCat('书包')">
-                <div class="nav-icon"></div>书包
+            <a class="nav-item" onclick="goCat('Backpack')">
+                <img class="nav-icon" src="./img/书包.png">
+                Backpack
             </a>
         </div>
 
-        <div style="padding:10px 15px;font-size:16px;font-weight:bold">猜你喜欢</div>
+        <div style="padding:10px 15px;font-size:32px;font-weight:bold">New style</div>
         <div class="goods">
             <div class="goods-item" onclick="goToDetail({
-      img:'./img/哈士奇.jpg',
-      name:'2026春季新款卫衣宽松百搭潮流上衣',
-      price:'99'
+      img:'./img/YF-647.jpg',
+      name:'NO:647',
+      price:'JMB:1000/1400'
     })">
-                <img src="./img/哈士奇.jpg" alt="" class="goods-img">
+                <img src="./img/YF-647.jpg" alt="" class="goods-img">
                 <div class="goods-info">
-                    <div class="goods-name">2026春季新款卫衣宽松百搭潮流上衣</div>
-                    <div class="goods-price">¥99.00</div>
+                    <div class="goods-name">NO:647</div>
+                    <div class="goods-price">JMB:1000/1400</div>
+                </div>
+            </div>
+
+            <div class="goods-item" onclick="goToDetail({
+      img:'./img/YF-651.jpg',
+      name:'NO:651',
+      price:'JMB:1000/1400'
+    })">
+                <img src="./img/YF-651.jpg" alt="" class="goods-img">
+                <div class="goods-info">
+                    <div class="goods-name">NO:651</div>
+                    <div class="goods-price">JMB:1000/1400</div>
+                </div>
+            </div>
+            <div class="goods-item" onclick="goToDetail({
+      img:'./img/YF-661.jpg',
+      name:'NO:661',
+      price:'JMB:1000/1400'
+    })">
+                <img src="./img/YF-661.jpg" alt="" class="goods-img">
+                <div class="goods-info">
+                    <div class="goods-name">NO:661</div>
+                    <div class="goods-price">JMB:1000/1400</div>
+                </div>
+            </div>
+            <div class="goods-item" onclick="goToDetail({
+      img:'./img/YF-9636.jpg',
+      name:'NO:9636',
+      price:'JMB:1000/1400'
+    })">
+                <img src="./img/YF-9636.jpg" alt="" class="goods-img">
+                <div class="goods-info">
+                    <div class="goods-name">NO:9636</div>
+                    <div class="goods-price">JMB:1000/1400</div>
+                </div>
+            </div>
+            <div class="goods-item" onclick="goToDetail({
+      img:'./img/YF-MX073.jpg',
+      name:'NO:MX073',
+      price:'JMB:1000/1400'
+    })">
+                <img src="./img/YF-MX073.jpg" alt="" class="goods-img">
+                <div class="goods-info">
+                    <div class="goods-name">NO:MX073</div>
+                    <div class="goods-price">JMB:1000/1400</div>
                 </div>
             </div>
         </div>
@@ -255,48 +327,78 @@
 
     <!-- 分类页面 -->
     <div class="page" id="category">
-        <div class="back" onclick="goBack()">← 返回</div>
+        <div class="back" onclick="goBack()">← Return</div>
         <div class="cat-title" id="catName">分类</div>
         <div class="cat-goods" id="catList"></div>
     </div>
 
     <!-- 商品详情页 -->
     <div class="page" id="detail">
-        <div class="back" onclick="goBack()">← 返回</div>
-        <img id="detailImg" class="detail-img">
+        <div class="back" onclick="goBack()">← Return</div>
+        <img id="detailImg" class="detail-img" onclick="openBigImg(this.src)">
         <div class="detail-info">
             <div id="detailName" class="detail-name"></div>
             <div id="detailPrice" class="detail-price"></div>
         </div>
     </div>
 
+    <!-- 大图弹窗 -->
+    <div class="img-modal" id="bigImgModal" onclick="closeBigImg()">
+        <img id="bigImg" class="modal-img">
+    </div>
+
     <script>
         const catData = {
-            女装: [
-                { img: "./img/哈士奇.jpg", name: "春季连衣裙显瘦气质", price: "139" },
-                { img: "./img/熊猫.jpg", name: "宽松针织衫百搭", price: "89" },
-                { img: "./img/大香蕉.jpg", name: "高腰直筒牛仔裤", price: "119" },
-                { img: "./img/熊猫.jpg", name: "碎花半身长裙", price: "79" }
+            Clothing: [
+                { img: "./img/YF-647.jpg", name: "NO:647", price: "JMB:1000/1400" },
+                { img: "./img/YF-651.jpg", name: "NO:651", price: "JMB:1000/1400" },
+                { img: "./img/YF-661.jpg", name: "NO:661", price: "JMB:1000/1400" },
+                { img: "./img/YF-9636.jpg", name: "NO:9636", price: "JMB:1000/1400" },
+                { img: "./img/YF-MX073.jpg", name: "NO:MX073", price: "JMB:1000/1400" },
+                { img: "./img/YF-656.jpg", name: "NO:656", price: "JMB:1000/1400" },
+                { img: "./img/YF-6033.jpg", name: "NO:6033", price: "JMB:1100/1500" },
+                { img: "./img/YF-8021.jpg", name: "NO:8021", price: "JMB:1000/1400" },
+                { img: "./img/YF-8026.jpg", name: "NO:8026", price: "JMB:1000/1400" },
+                { img: "./img/YF-9694.jpg", name: "NO:9694", price: "JMB:1000/1400" }
             ],
-            包包: [
-                { img: "./img/哈士奇.jpg", name: "休闲夹克外套", price: "169" },
-                { img: "./img/熊猫.jpg", name: "商务长袖衬衫", price: "99" },
-                { img: "./img/大香蕉.jpg", name: "直筒休闲长裤", price: "109" },
-                { img: "./img/熊猫.jpg", name: "圆领运动卫衣", price: "89" }
+            Bag: [
+                { img: "./img/BB-01.jpg", name: "NO:01", price: "JMD:1200/1500" },
+                { img: "./img/BB-17.jpg", name: "NO:17", price: "JMD:800/1000" },
+                { img: "./img/BB-23.jpg", name: "NO:23", price: "JMD:1000/1300" },
+                { img: "./img/BB-25.jpg", name: "NO:25", price: "JMD:1000/1300" },
+                { img: "./img/BB-26.jpg", name: "NO:26", price: "JMD:800/1000" },
+                { img: "./img/BB-27.jpg", name: "NO:27", price: "JMD:1000/1300" },
+                { img: "./img/BB-32.jpg", name: "NO:32", price: "JMD:1000/1300" },
+                { img: "./img/BB-33-10.jpg", name: "NO:33-10", price: "JMD:1000/1300" },
+                { img: "./img/BB-33-12.jpg", name: "NO:33-12", price: "JMD:1000/1300" },
+                { img: "./img/BB-506.jpg", name: "NO:506", price: "JMD:2000/2500" },
+                { img: "./img/BB-668.jpg", name: "NO:668", price: "JMD:2000/2500" },
+                { img: "./img/BB-1511.jpg", name: "NO:1511", price: "JMD:1000/1300" },
+                { img: "./img/BB-2022.jpg", name: "NO:2022", price: "JMD:1000/1300" },
+                { img: "./img/BB-2799.jpg", name: "NO:2799", price: "JMD:1000/1300" },
+                { img: "./img/BB-6920-2.jpg", name: "NO:6920-2", price: "JMD:1200/1500" },
+                { img: "./img/BB-8098.jpg", name: "NO:8098", price: "JMD:1000/1300" },
+                { img: "./img/BB-8303-1.jpg", name: "NO:8303-1", price: "JMD:2000/2500" },
+                { img: "./img/BB-8673-2.jpg", name: "NO:8673-2", price: "JMD:2000/2500" },
+                { img: "./img/BB-8701.jpg", name: "NO:8701", price: "JMD:1000/1300" },
+                { img: "./img/BB-88828.jpg", name: "NO:88828", price: "JMD:2000/2500" },
+                { img: "./img/BB-A8633.jpg", name: "NO:A8633", price: "JMD:2000/2500" },
+                { img: "./img/BB-COACH.jpg", name: "NO:COACH", price: "JMD:2000/2500" },
+                { img: "./img/BB-W97661-2.jpg", name: "NO:W97661-2", price: "JMD:2000/2500" }
             ],
-            精品: [
+            jewelry: [
                 { img: "./img/哈士奇.jpg", name: "百搭小白鞋", price: "129" },
                 { img: "./img/熊猫.jpg", name: "时尚单肩女包", price: "159" },
                 { img: "./img/大香蕉.jpg", name: "厚底老爹鞋", price: "179" },
                 { img: "./img/熊猫.jpg", name: "休闲双肩包", price: "99" }
             ],
-            帽子: [
+            Hat: [
                 { img: "./img/哈士奇.jpg", name: "智能电饭煲", price: "299" },
                 { img: "./img/熊猫.jpg", name: "无线吸尘器", price: "499" },
                 { img: "./img/大香蕉.jpg", name: "充电电动牙刷", price: "129" },
                 { img: "./img/熊猫.jpg", name: "多功能空气炸锅", price: "329" }
             ],
-            书包: [
+            Backpack: [
                 { img: "./img/哈士奇.jpg", name: "新鲜奶油草莓", price: "49" },
                 { img: "./img/熊猫.jpg", name: "农家散养土鸡蛋", price: "39" },
                 { img: "./img/大香蕉.jpg", name: "鲜活深海大虾", price: "129" },
@@ -304,10 +406,8 @@
             ]
         }
 
-        // 页面栈，实现正常返回上一级
         let pageStack = ['home'];
 
-        // 轮播
         let slides = document.querySelectorAll('.slide');
         let i = 0;
         setInterval(() => {
@@ -316,19 +416,16 @@
             slides[i].classList.add('active');
         }, 3000);
 
-        // 显示页面
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
         }
 
-        // 跳转到新页面
         function navigateTo(id) {
             pageStack.push(id);
             showPage(id);
         }
 
-        // 返回上一级
         function goBack() {
             if (pageStack.length > 1) {
                 pageStack.pop();
@@ -336,7 +433,6 @@
             }
         }
 
-        // 去分类页
         function goCat(name) {
             document.getElementById('catName').innerText = name;
             const list = document.getElementById('catList');
@@ -348,7 +444,7 @@
         <img src="${goods.img}" class="cat-goods-img">
         <div class="cat-goods-info">
           <div class="cat-goods-name">${goods.name}</div>
-          <div class="cat-goods-price">¥${goods.price}.00</div>
+          <div class="cat-goods-price">${goods.price}</div>
         </div>
       </div>
     `;
@@ -357,14 +453,21 @@
             navigateTo('category');
         }
 
-        // 去商品详情（所有商品都用这个）
         function goToDetail(goods) {
             document.getElementById('detailImg').src = goods.img;
             document.getElementById('detailName').innerText = goods.name;
-            document.getElementById('detailPrice').innerText = `¥${goods.price}.00`;
+            document.getElementById('detailPrice').innerText = `${goods.price}`;
             navigateTo('detail');
         }
 
+        // 大图查看
+        function openBigImg(src) {
+            document.getElementById('bigImg').src = src;
+            document.getElementById('bigImgModal').style.display = 'flex';
+        }
+        function closeBigImg() {
+            document.getElementById('bigImgModal').style.display = 'none';
+        }
     </script>
 </body>
 

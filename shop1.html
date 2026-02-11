@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+    <title>一号店首页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif
+        }
+
+        body {
+            background: #f4f4f4
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit
+        }
+
+        .page {
+            display: none
+        }
+
+        .page.active {
+            display: block
+        }
+
+        /* 顶部 */
+        .top {
+            background: #ff5000;
+            color: #fff;
+            padding: 14px 15px;
+            font-weight: bold;
+            font-size: 17px;
+            text-align: center
+        }
+
+        /* 轮播 */
+        .swiper {
+            margin: 0 15px;
+            border-radius: 12px;
+            overflow: hidden;
+            height: 160px;
+            position: relative
+        }
+
+        .slide {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            display: none
+        }
+
+        .slide.active {
+            display: block
+        }
+
+        /* 分类 */
+        .nav {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            background: #fff;
+            margin: 10px 15px;
+            border-radius: 12px;
+            padding: 15px 0;
+            gap: 5px
+        }
+
+        .nav-item {
+            text-align: center;
+            font-size: 12px
+        }
+
+        .nav-icon {
+            width: 40px;
+            height: 40px;
+            background: #ffefe7;
+            border-radius: 50%;
+            margin: 0 auto 5px
+        }
+
+        /* 商品 */
+        .goods {
+            margin: 0 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding-bottom: 15px
+        }
+
+        .goods-item {
+            width: calc(50% - 5px);
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer
+        }
+
+        .goods-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover
+        }
+
+        .goods-info {
+            padding: 10px
+        }
+
+        .goods-name {
+            font-size: 14px;
+            color: #333;
+            height: 40px;
+            overflow: hidden;
+            margin-bottom: 6px
+        }
+
+        .goods-price {
+            font-size: 16px;
+            color: #ff5000;
+            font-weight: bold
+        }
+
+        /* 分类页商品 */
+        .cat-goods {
+            margin: 0 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding-bottom: 15px;
+        }
+
+        .cat-goods-item {
+            width: calc(50% - 5px);
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .cat-goods-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .cat-goods-info {
+            padding: 10px;
+        }
+
+        .cat-goods-name {
+            font-size: 14px;
+            color: #333;
+            height: 40px;
+            overflow: hidden;
+            margin-bottom: 6px;
+        }
+
+        .cat-goods-price {
+            font-size: 16px;
+            color: #ff5000;
+            font-weight: bold;
+        }
+
+        .back {
+            padding: 10px 15px;
+            color: #ff5000;
+            font-size: 16px;
+            cursor: pointer
+        }
+
+        .cat-title {
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center
+        }
+
+        /* 商品详情页 */
+        .detail-img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .detail-info {
+            padding: 15px;
+            background: #fff;
+            margin: 10px 0;
+        }
+
+        .detail-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .detail-price {
+            font-size: 22px;
+            color: #ff5000;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 首页 -->
+    <div class="page active" id="home">
+        <div class="top">一号店</div>
+
+        <div class="swiper">
+            <img src="./img/哈士奇.jpg" alt="" class="slide active">
+            <img src="./img/熊猫.jpg" alt="" class="slide">
+            <img src="./img/大香蕉.jpg" alt="" class="slide">
+        </div>
+
+        <div class="nav">
+            <a class="nav-item" onclick="goCat('女装')">
+                <div class="nav-icon"></div>女装
+            </a>
+            <a class="nav-item" onclick="goCat('包包')">
+                <div class="nav-icon"></div>包包
+            </a>
+            <a class="nav-item" onclick="goCat('精品')">
+                <div class="nav-icon"></div>精品
+            </a>
+            <a class="nav-item" onclick="goCat('帽子')">
+                <div class="nav-icon"></div>帽子
+            </a>
+            <a class="nav-item" onclick="goCat('书包')">
+                <div class="nav-icon"></div>书包
+            </a>
+        </div>
+
+        <div style="padding:10px 15px;font-size:16px;font-weight:bold">猜你喜欢</div>
+        <div class="goods">
+            <div class="goods-item" onclick="goToDetail({
+      img:'./img/哈士奇.jpg',
+      name:'2026春季新款卫衣宽松百搭潮流上衣',
+      price:'99'
+    })">
+                <img src="./img/哈士奇.jpg" alt="" class="goods-img">
+                <div class="goods-info">
+                    <div class="goods-name">2026春季新款卫衣宽松百搭潮流上衣</div>
+                    <div class="goods-price">¥99.00</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分类页面 -->
+    <div class="page" id="category">
+        <div class="back" onclick="goBack()">← 返回</div>
+        <div class="cat-title" id="catName">分类</div>
+        <div class="cat-goods" id="catList"></div>
+    </div>
+
+    <!-- 商品详情页 -->
+    <div class="page" id="detail">
+        <div class="back" onclick="goBack()">← 返回</div>
+        <img id="detailImg" class="detail-img">
+        <div class="detail-info">
+            <div id="detailName" class="detail-name"></div>
+            <div id="detailPrice" class="detail-price"></div>
+        </div>
+    </div>
+
+    <script>
+        const catData = {
+            女装: [
+                { img: "./img/哈士奇.jpg", name: "春季连衣裙显瘦气质", price: "139" },
+                { img: "./img/熊猫.jpg", name: "宽松针织衫百搭", price: "89" },
+                { img: "./img/大香蕉.jpg", name: "高腰直筒牛仔裤", price: "119" },
+                { img: "./img/熊猫.jpg", name: "碎花半身长裙", price: "79" }
+            ],
+            包包: [
+                { img: "./img/哈士奇.jpg", name: "休闲夹克外套", price: "169" },
+                { img: "./img/熊猫.jpg", name: "商务长袖衬衫", price: "99" },
+                { img: "./img/大香蕉.jpg", name: "直筒休闲长裤", price: "109" },
+                { img: "./img/熊猫.jpg", name: "圆领运动卫衣", price: "89" }
+            ],
+            精品: [
+                { img: "./img/哈士奇.jpg", name: "百搭小白鞋", price: "129" },
+                { img: "./img/熊猫.jpg", name: "时尚单肩女包", price: "159" },
+                { img: "./img/大香蕉.jpg", name: "厚底老爹鞋", price: "179" },
+                { img: "./img/熊猫.jpg", name: "休闲双肩包", price: "99" }
+            ],
+            帽子: [
+                { img: "./img/哈士奇.jpg", name: "智能电饭煲", price: "299" },
+                { img: "./img/熊猫.jpg", name: "无线吸尘器", price: "499" },
+                { img: "./img/大香蕉.jpg", name: "充电电动牙刷", price: "129" },
+                { img: "./img/熊猫.jpg", name: "多功能空气炸锅", price: "329" }
+            ],
+            书包: [
+                { img: "./img/哈士奇.jpg", name: "新鲜奶油草莓", price: "49" },
+                { img: "./img/熊猫.jpg", name: "农家散养土鸡蛋", price: "39" },
+                { img: "./img/大香蕉.jpg", name: "鲜活深海大虾", price: "129" },
+                { img: "./img/熊猫.jpg", name: "原切雪花牛肉", price: "199" }
+            ]
+        }
+
+        // 页面栈，实现正常返回上一级
+        let pageStack = ['home'];
+
+        // 轮播
+        let slides = document.querySelectorAll('.slide');
+        let i = 0;
+        setInterval(() => {
+            slides[i].classList.remove('active');
+            i = (i + 1) % slides.length;
+            slides[i].classList.add('active');
+        }, 3000);
+
+        // 显示页面
+        function showPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        // 跳转到新页面
+        function navigateTo(id) {
+            pageStack.push(id);
+            showPage(id);
+        }
+
+        // 返回上一级
+        function goBack() {
+            if (pageStack.length > 1) {
+                pageStack.pop();
+                showPage(pageStack[pageStack.length - 1]);
+            }
+        }
+
+        // 去分类页
+        function goCat(name) {
+            document.getElementById('catName').innerText = name;
+            const list = document.getElementById('catList');
+            list.innerHTML = '';
+
+            catData[name].forEach(goods => {
+                list.innerHTML += `
+      <div class="cat-goods-item" onclick='goToDetail(${JSON.stringify(goods)})'>
+        <img src="${goods.img}" class="cat-goods-img">
+        <div class="cat-goods-info">
+          <div class="cat-goods-name">${goods.name}</div>
+          <div class="cat-goods-price">¥${goods.price}.00</div>
+        </div>
+      </div>
+    `;
+            })
+
+            navigateTo('category');
+        }
+
+        // 去商品详情（所有商品都用这个）
+        function goToDetail(goods) {
+            document.getElementById('detailImg').src = goods.img;
+            document.getElementById('detailName').innerText = goods.name;
+            document.getElementById('detailPrice').innerText = `¥${goods.price}.00`;
+            navigateTo('detail');
+        }
+
+    </script>
+</body>
+
+</html>

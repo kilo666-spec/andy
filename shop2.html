@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Miya 一号店</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background: #f4f4f4;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .top {
+            background: #FF69B4;
+            color: #fff;
+            padding: 14px 15px;
+            font-weight: bold;
+            font-size: 17px;
+            text-align: center;
+        }
+
+        .swiper {
+            margin: 0 15px;
+            border-radius: 12px;
+            overflow: hidden;
+            height: 160px;
+            position: relative;
+            margin-top: 10px;
+        }
+
+        .slide {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            display: none;
+            background: #ddd;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        .nav {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            background: #fff;
+            margin: 10px 15px;
+            border-radius: 12px;
+            padding: 15px 0;
+            gap: 5px;
+        }
+
+        .nav-item {
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .nav-icon {
+            width: 40px;
+            height: 40px;
+            background: #ffe0f0;
+            border-radius: 50%;
+            margin: 0 auto 5px;
+        }
+
+        .goods {
+            margin: 0 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding-bottom: 15px;
+        }
+
+        .goods-item {
+            width: calc(50% - 5px);
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .goods-img {
+            width: 100%;
+            height: 180px;
+            background: #eee;
+            object-fit: cover;
+        }
+
+        .goods-info {
+            padding: 10px;
+        }
+
+        .goods-name {
+            font-size: 14px;
+            color: #333;
+            height: 40px;
+            overflow: hidden;
+            margin-bottom: 6px;
+        }
+
+        .goods-price {
+            font-size: 16px;
+            color: #FF69B4;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page active" id="home">
+        <div class="top">Miya 一号店</div>
+
+        <div class="swiper">
+            <div class="slide active"></div>
+            <div class="slide"></div>
+            <div class="slide"></div>
+        </div>
+
+        <div class="nav">
+            <div class="nav-item">
+                <div class="nav-icon"></div>美妆
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon"></div>服饰
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon"></div>饰品
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon"></div>零食
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon"></div>更多
+            </div>
+        </div>
+
+        <div class="goods">
+            <div class="goods-item">
+                <div class="goods-img"></div>
+                <div class="goods-info">
+                    <div class="goods-name">Miya 店铺商品 01</div>
+                    <div class="goods-price">¥89</div>
+                </div>
+            </div>
+            <div class="goods-item">
+                <div class="goods-img"></div>
+                <div class="goods-info">
+                    <div class="goods-name">Miya 店铺商品 02</div>
+                    <div class="goods-price">¥159</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

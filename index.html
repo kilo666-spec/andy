@@ -64,30 +64,38 @@
             }
         }
 
+        /* 通用图标容器样式 */
         .logo-icon {
-            width: 64px;
-            height: 64px;
-            background-color: #165DFF;
+            width: 60px;
+            height: 60px;
             border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             margin-right: 1rem;
+            overflow: hidden;
+            /* 让图片圆角生效 */
             box-shadow: 0 8px 20px rgba(22, 93, 255, 0.25);
         }
 
-        .miya .logo-icon {
-            background-color: #FF69B4;
+        /* Andy Store 图标样式 */
+        .logo-area.andy .logo-icon {
+            box-shadow: 0 8px 20px rgba(22, 93, 255, 0.25);
+        }
+
+        /* Mia Store 图标样式 */
+        .logo-area.mia .logo-icon {
             box-shadow: 0 8px 20px rgba(255, 105, 180, 0.25);
         }
 
+        /* 移除原来的伪元素图标 */
         .logo-icon::after {
-            content: '';
-            width: 28px;
-            height: 28px;
-            border-left: 6px solid white;
-            border-bottom: 6px solid white;
-            transform: rotate(-45deg);
+            display: none;
+        }
+
+        /* 图标图片样式 */
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* 保持图片比例填充 */
         }
 
         .logo-text {
@@ -141,17 +149,23 @@
 
     <div class="store-box">
         <div class="logo-area andy">
-            <div class="logo-icon"></div>
+            <!-- Andy Store 图标：替换为你的图片路径 -->
+            <div class="logo-icon">
+                <img src="./img/icon.jpg" alt="Andy Store Icon">
+            </div>
             <div class="logo-text">Andy Store</div>
         </div>
-        <a href="shop1.html" class="enter-btn andy">
+        <a href=" " class="enter-btn andy">
             Enter Andy's store
         </a>
     </div>
 
     <div class="store-box">
         <div class="logo-area mia">
-            <div class="logo-icon"></div>
+            <!-- Mia Store 图标：替换为你的图片路径 -->
+            <div class="logo-icon">
+                <img src="./img/icon.jpg" alt="Mia Store Icon">
+            </div>
             <div class="logo-text">Mia Store</div>
         </div>
         <a href="shop2.html" class="enter-btn mia">

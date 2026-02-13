@@ -30,14 +30,40 @@
             display: block
         }
 
-        /* 顶部 */
+        /* 顶部 - 新增购物车样式 */
         .top {
             background: #ff5000;
             color: #fff;
             padding: 14px 15px;
             font-weight: bold;
             font-size: 17px;
-            text-align: center
+            text-align: center;
+            position: relative;
+        }
+
+        .cart-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .cart-badge {
+            position: absolute;
+            right: -8px;
+            top: -8px;
+            background: #fff;
+            color: #ff5000;
+            font-size: 12px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
         }
 
         /* 轮播 */
@@ -105,7 +131,8 @@
         .goods-img {
             width: 100%;
             height: 180px;
-            object-fit: cover
+            object-fit: cover;
+            background: #f0f0f0;
         }
 
         .goods-info {
@@ -147,6 +174,7 @@
             width: 100%;
             height: 180px;
             object-fit: cover;
+            background: #f0f0f0;
         }
 
         .cat-goods-info {
@@ -181,12 +209,13 @@
             text-align: center
         }
 
-        /* 商品详情页 */
+        /* 商品详情页 - 新增加入购物车按钮 */
         .detail-img {
             width: 100%;
             height: 300px;
             object-fit: cover;
             cursor: pointer;
+            background: #f0f0f0;
         }
 
         .detail-info {
@@ -205,6 +234,25 @@
             font-size: 22px;
             color: #ff5000;
             font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .add-cart-btn {
+            display: block;
+            width: 100%;
+            background: #ff5000;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 0;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .add-cart-btn:active {
+            background: #e04500;
         }
 
         /* 大图弹窗 */
@@ -219,6 +267,7 @@
             z-index: 9999;
             justify-content: center;
             align-items: center;
+            touch-action: none;
         }
 
         .modal-img {
@@ -226,40 +275,202 @@
             max-height: 95vh;
             object-fit: contain;
         }
+
+        /* 加载失败图片样式 */
+        img[alt]::after {
+            content: attr(alt);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            background: #f0f0f0;
+            color: #999;
+            font-size: 12px;
+        }
+
+        /* 购物车页面样式 */
+        .cart-page {
+            padding-bottom: 80px;
+        }
+
+        .cart-empty {
+            text-align: center;
+            padding: 50px 0;
+            color: #999;
+            font-size: 16px;
+        }
+
+        .cart-empty i {
+            font-size: 60px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .cart-item {
+            background: #fff;
+            margin: 10px 15px;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            gap: 15px;
+            cursor: pointer;
+            /* 新增：添加鼠标指针样式 */
+        }
+
+        .cart-item-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .cart-item-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .cart-item-name {
+            font-size: 15px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-price {
+            font-size: 16px;
+            color: #ff5000;
+            font-weight: bold;
+        }
+
+        .cart-item-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cart-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+            background: #fff;
+            color: #333;
+            font-size: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            /* 新增：阻止事件冒泡 */
+            z-index: 1;
+        }
+
+        .cart-count {
+            font-size: 14px;
+            min-width: 20px;
+            text-align: center;
+            /* 新增：阻止事件冒泡 */
+            z-index: 1;
+        }
+
+        .cart-delete {
+            color: #999;
+            font-size: 14px;
+            cursor: pointer;
+            /* 新增：阻止事件冒泡 */
+            z-index: 1;
+        }
+
+        .cart-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #fff;
+            padding: 15px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-total {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .cart-total-price {
+            color: #ff5000;
+        }
+
+        .cart-checkout {
+            background: #ff5000;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .cart-checkout:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
     </style>
+    <!-- 引入字体图标（购物车图标） -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
 
     <!-- 首页 -->
     <div class="page active" id="home">
-        <div class="top">Andy's Store</div>
+        <div class="top">
+            Andy's Store
+            <!-- 新增购物车图标 -->
+            <div class="cart-icon" onclick="goToCart()">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-badge" id="cartBadge">0</span>
+            </div>
+        </div>
 
         <div class="swiper">
-            <img src="./img/哈士奇.jpg" alt="" class="slide active">
-            <img src="./img/熊猫.jpg" alt="" class="slide">
-            <img src="./img/大香蕉.jpg" alt="" class="slide">
+            <img src="./img/哈士奇.jpg" alt="轮播图1" class="slide active"
+                onerror="this.src='https://via.placeholder.com/375x160?text=Image+Not+Found'">
+            <img src="./img/熊猫.jpg" alt="轮播图2" class="slide"
+                onerror="this.src='https://via.placeholder.com/375x160?text=Image+Not+Found'">
+            <img src="./img/大香蕉.jpg" alt="轮播图3" class="slide"
+                onerror="this.src='https://via.placeholder.com/375x160?text=Image+Not+Found'">
         </div>
 
         <div class="nav">
             <a class="nav-item" onclick="goCat('Clothing')">
-                <img class="nav-icon" src="./img/衣服1.png">
+                <img class="nav-icon" src="./img/衣服1.png" alt="服装"
+                    onerror="this.src='https://via.placeholder.com/40x40?text=Icon'">
                 Clothing
             </a>
             <a class="nav-item" onclick="goCat('Bag')">
-                <img class="nav-icon" src="./img/包包.png">
+                <img class="nav-icon" src="./img/包包.png" alt="包包"
+                    onerror="this.src='https://via.placeholder.com/40x40?text=Icon'">
                 Bag
             </a>
             <a class="nav-item" onclick="goCat('jewelry')">
-                <img class="nav-icon" src="./img/精品.png">
+                <img class="nav-icon" src="./img/精品.png" alt="精品首饰"
+                    onerror="this.src='https://via.placeholder.com/40x40?text=Icon'">
                 Fine jewelry
             </a>
             <a class="nav-item" onclick="goCat('Hat')">
-                <img class="nav-icon" src="./img/鸭舌帽.png">
+                <img class="nav-icon" src="./img/鸭舌帽.png" alt="帽子"
+                    onerror="this.src='https://via.placeholder.com/40x40?text=Icon'">
                 Hat
             </a>
             <a class="nav-item" onclick="goCat('Backpack')">
-                <img class="nav-icon" src="./img/书包.png">
+                <img class="nav-icon" src="./img/书包.png" alt="背包"
+                    onerror="this.src='https://via.placeholder.com/40x40?text=Icon'">
                 Backpack
             </a>
         </div>
@@ -269,9 +480,11 @@
             <div class="goods-item" onclick="goToDetail({
       img:'./img/YF-647.jpg',
       name:'NO:647',
-      price:'JMB:1000/1400'
+      price:'JMB:1000/1400',
+      id:'YF-647'
     })">
-                <img src="./img/YF-647.jpg" alt="" class="goods-img">
+                <img src="./img/YF-647.jpg" alt="NO:647" class="goods-img"
+                    onerror="this.src='https://via.placeholder.com/180x180?text=Product+Image'">
                 <div class="goods-info">
                     <div class="goods-name">NO:647</div>
                     <div class="goods-price">JMB:1000/1400</div>
@@ -281,9 +494,11 @@
             <div class="goods-item" onclick="goToDetail({
       img:'./img/YF-651.jpg',
       name:'NO:651',
-      price:'JMB:1000/1400'
+      price:'JMB:1000/1400',
+      id:'YF-651'
     })">
-                <img src="./img/YF-651.jpg" alt="" class="goods-img">
+                <img src="./img/YF-651.jpg" alt="NO:651" class="goods-img"
+                    onerror="this.src='https://via.placeholder.com/180x180?text=Product+Image'">
                 <div class="goods-info">
                     <div class="goods-name">NO:651</div>
                     <div class="goods-price">JMB:1000/1400</div>
@@ -292,9 +507,11 @@
             <div class="goods-item" onclick="goToDetail({
       img:'./img/YF-661.jpg',
       name:'NO:661',
-      price:'JMB:1000/1400'
+      price:'JMB:1000/1400',
+      id:'YF-661'
     })">
-                <img src="./img/YF-661.jpg" alt="" class="goods-img">
+                <img src="./img/YF-661.jpg" alt="NO:661" class="goods-img"
+                    onerror="this.src='https://via.placeholder.com/180x180?text=Product+Image'">
                 <div class="goods-info">
                     <div class="goods-name">NO:661</div>
                     <div class="goods-price">JMB:1000/1400</div>
@@ -303,9 +520,11 @@
             <div class="goods-item" onclick="goToDetail({
       img:'./img/YF-9636.jpg',
       name:'NO:9636',
-      price:'JMB:1000/1400'
+      price:'JMB:1000/1400',
+      id:'YF-9636'
     })">
-                <img src="./img/YF-9636.jpg" alt="" class="goods-img">
+                <img src="./img/YF-9636.jpg" alt="NO:9636" class="goods-img"
+                    onerror="this.src='https://via.placeholder.com/180x180?text=Product+Image'">
                 <div class="goods-info">
                     <div class="goods-name">NO:9636</div>
                     <div class="goods-price">JMB:1000/1400</div>
@@ -314,9 +533,11 @@
             <div class="goods-item" onclick="goToDetail({
       img:'./img/YF-MX073.jpg',
       name:'NO:MX073',
-      price:'JMB:1000/1400'
+      price:'JMB:1000/1400',
+      id:'YF-MX073'
     })">
-                <img src="./img/YF-MX073.jpg" alt="" class="goods-img">
+                <img src="./img/YF-MX073.jpg" alt="NO:MX073" class="goods-img"
+                    onerror="this.src='https://via.placeholder.com/180x180?text=Product+Image'">
                 <div class="goods-info">
                     <div class="goods-name">NO:MX073</div>
                     <div class="goods-price">JMB:1000/1400</div>
@@ -335,86 +556,132 @@
     <!-- 商品详情页 -->
     <div class="page" id="detail">
         <div class="back" onclick="goBack()">← Return</div>
-        <img id="detailImg" class="detail-img" onclick="openBigImg(this.src)">
+        <img id="detailImg" class="detail-img" onclick="openBigImg(this.src)"
+            onerror="this.src='https://via.placeholder.com/375x300?text=Detail+Image'">
         <div class="detail-info">
             <div id="detailName" class="detail-name"></div>
             <div id="detailPrice" class="detail-price"></div>
+            <!-- 新增加入购物车按钮 -->
+            <button class="add-cart-btn" onclick="addToCart()">加入购物车</button>
+        </div>
+    </div>
+
+    <!-- 新增购物车页面 -->
+    <div class="page cart-page" id="cart">
+        <div class="back" onclick="goBack()">← Return</div>
+        <div class="cat-title">My Cart</div>
+
+        <!-- 购物车空状态 -->
+        <div class="cart-empty" id="cartEmpty">
+            <i class="fas fa-shopping-cart"></i>
+            <p>购物车空空如也~</p>
+            <p style="margin-top:10px;">快去添加商品吧</p>
+        </div>
+
+        <!-- 购物车商品列表 -->
+        <div id="cartList"></div>
+
+        <!-- 购物车底部结算 -->
+        <div class="cart-footer" id="cartFooter" style="display: none;">
+            <div class="cart-total">
+                总计: <span class="cart-total-price" id="cartTotalPrice">0</span>
+            </div>
+            <button class="cart-checkout" id="checkoutBtn">结算</button>
         </div>
     </div>
 
     <!-- 大图弹窗 -->
     <div class="img-modal" id="bigImgModal" onclick="closeBigImg()">
-        <img id="bigImg" class="modal-img">
+        <img id="bigImg" class="modal-img" onerror="this.src='https://via.placeholder.com/800x800?text=Big+Image'">
     </div>
 
     <script>
         const catData = {
             Clothing: [
-                { img: "./img/YF-647.jpg", name: "NO:647", price: "JMB:1000/1400" },
-                { img: "./img/YF-651.jpg", name: "NO:651", price: "JMB:1000/1400" },
-                { img: "./img/YF-661.jpg", name: "NO:661", price: "JMB:1000/1400" },
-                { img: "./img/YF-9636.jpg", name: "NO:9636", price: "JMB:1000/1400" },
-                { img: "./img/YF-MX073.jpg", name: "NO:MX073", price: "JMB:1000/1400" },
-                { img: "./img/YF-656.jpg", name: "NO:656", price: "JMB:1000/1400" },
-                { img: "./img/YF-6033.jpg", name: "NO:6033", price: "JMB:1100/1500" },
-                { img: "./img/YF-8021.jpg", name: "NO:8021", price: "JMB:1000/1400" },
-                { img: "./img/YF-8026.jpg", name: "NO:8026", price: "JMB:1000/1400" },
-                { img: "./img/YF-9649.jpg", name: "NO:9649", price: "JMB:1000/1400" }
+                { img: "./img/YF-647.jpg", name: "NO:647", price: "JMB:1000/1400", id: "YF-647" },
+                { img: "./img/YF-651.jpg", name: "NO:651", price: "JMB:1000/1400", id: "YF-651" },
+                { img: "./img/YF-661.jpg", name: "NO:661", price: "JMB:1000/1400", id: "YF-661" },
+                { img: "./img/YF-9636.jpg", name: "NO:9636", price: "JMB:1000/1400", id: "YF-9636" },
+                { img: "./img/YF-MX073.jpg", name: "NO:MX073", price: "JMB:1000/1400", id: "YF-MX073" },
+                { img: "./img/YF-656.jpg", name: "NO:656", price: "JMB:1000/1400", id: "YF-656" },
+                { img: "./img/YF-6033.jpg", name: "NO:6033", price: "JMB:1100/1500", id: "YF-6033" },
+                { img: "./img/YF-8021.jpg", name: "NO:8021", price: "JMB:1000/1400", id: "YF-8021" },
+                { img: "./img/YF-8026.jpg", name: "NO:8026", price: "JMB:1000/1400", id: "YF-8026" },
+                { img: "./img/YF-9649.jpg", name: "NO:9649", price: "JMB:1000/1400", id: "YF-9649" }
             ],
             Bag: [
-                { img: "./img/BB-01.jpg", name: "NO:01", price: "JMD:1200/1500" },
-                { img: "./img/BB-17.jpg", name: "NO:17", price: "JMD:800/1000" },
-                { img: "./img/BB-23.jpg", name: "NO:23", price: "JMD:1000/1300" },
-                { img: "./img/BB-25.jpg", name: "NO:25", price: "JMD:1000/1300" },
-                { img: "./img/BB-26.jpg", name: "NO:26", price: "JMD:800/1000" },
-                { img: "./img/BB-27.jpg", name: "NO:27", price: "JMD:1000/1300" },
-                { img: "./img/BB-32.jpg", name: "NO:32", price: "JMD:1000/1300" },
-                { img: "./img/BB-33-10.jpg", name: "NO:33-10", price: "JMD:1000/1300" },
-                { img: "./img/BB-33-12.jpg", name: "NO:33-12", price: "JMD:1000/1300" },
-                { img: "./img/BB-506.jpg", name: "NO:506", price: "JMD:2000/2500" },
-                { img: "./img/BB-668.jpg", name: "NO:668", price: "JMD:2000/2500" },
-                { img: "./img/BB-1511.jpg", name: "NO:1511", price: "JMD:1000/1300" },
-                { img: "./img/BB-2022.jpg", name: "NO:2022", price: "JMD:1000/1300" },
-                { img: "./img/BB-2799.jpg", name: "NO:2799", price: "JMD:1000/1300" },
-                { img: "./img/BB-6920-2.jpg", name: "NO:6920-2", price: "JMD:1200/1500" },
-                { img: "./img/BB-8098.jpg", name: "NO:8098", price: "JMD:1000/1300" },
-                { img: "./img/BB-8303-1.jpg", name: "NO:8303-1", price: "JMD:2000/2500" },
-                { img: "./img/BB-8673-2.jpg", name: "NO:8673-2", price: "JMD:2000/2500" },
-                { img: "./img/BB-8701.jpg", name: "NO:8701", price: "JMD:1000/1300" },
-                { img: "./img/BB-88828.jpg", name: "NO:88828", price: "JMD:2000/2500" },
-                { img: "./img/BB-A8633.jpg", name: "NO:A8633", price: "JMD:2000/2500" },
-                { img: "./img/BB-COACH.jpg", name: "NO:COACH", price: "JMD:2000/2500" },
-                { img: "./img/BB-W97661-2.jpg", name: "NO:W97661-2", price: "JMD:2000/2500" }
+                { img: "./img/BB-01.jpg", name: "NO:01", price: "JMD:1200/1500", id: "BB-01" },
+                { img: "./img/BB-17.jpg", name: "NO:17", price: "JMD:800/1000", id: "BB-17" },
+                { img: "./img/BB-23.jpg", name: "NO:23", price: "JMD:1000/1300", id: "BB-23" },
+                { img: "./img/BB-25.jpg", name: "NO:25", price: "JMD:1000/1300", id: "BB-25" },
+                { img: "./img/BB-26.jpg", name: "NO:26", price: "JMD:800/1000", id: "BB-26" },
+                { img: "./img/BB-27.jpg", name: "NO:27", price: "JMD:1000/1300", id: "BB-27" },
+                { img: "./img/BB-32.jpg", name: "NO:32", price: "JMD:1000/1300", id: "BB-32" },
+                { img: "./img/BB-33-10.jpg", name: "NO:33-10", price: "JMD:1000/1300", id: "BB-33-10" },
+                { img: "./img/BB-33-12.jpg", name: "NO:33-12", price: "JMD:1000/1300", id: "BB-33-12" },
+                { img: "./img/BB-506.jpg", name: "NO:506", price: "JMD:2000/2500", id: "BB-506" },
+                { img: "./img/BB-668.jpg", name: "NO:668", price: "JMD:2000/2500", id: "BB-668" },
+                { img: "./img/BB-1511.jpg", name: "NO:1511", price: "JMD:1000/1300", id: "BB-1511" },
+                { img: "./img/BB-2022.jpg", name: "NO:2022", price: "JMD:1000/1300", id: "BB-2022" },
+                { img: "./img/BB-2799.jpg", name: "NO:2799", price: "JMD:1000/1300", id: "BB-2799" },
+                { img: "./img/BB-6920-2.jpg", name: "NO:6920-2", price: "JMD:1200/1500", id: "BB-6920-2" },
+                { img: "./img/BB-8098.jpg", name: "NO:8098", price: "JMD:1000/1300", id: "BB-8098" },
+                { img: "./img/BB-8303-1.jpg", name: "NO:8303-1", price: "JMD:2000/2500", id: "BB-8303-1" },
+                { img: "./img/BB-8673-2.jpg", name: "NO:8673-2", price: "JMD:2000/2500", id: "BB-8673-2" },
+                { img: "./img/BB-8701.jpg", name: "NO:8701", price: "JMD:1000/1300", id: "BB-8701" },
+                { img: "./img/BB-88828.jpg", name: "NO:88828", price: "JMD:2000/2500", id: "BB-88828" },
+                { img: "./img/BB-A8633.jpg", name: "NO:A8633", price: "JMD:2000/2500", id: "BB-A8633" },
+                { img: "./img/BB-COACH.jpg", name: "NO:COACH", price: "JMD:2000/2500", id: "BB-COACH" },
+                { img: "./img/BB-W97661-2.jpg", name: "NO:W97661-2", price: "JMD:2000/2500", id: "BB-W97661-2" }
             ],
             jewelry: [
-                { img: "./img/哈士奇.jpg", name: "百搭小白鞋", price: "129" },
-                { img: "./img/熊猫.jpg", name: "时尚单肩女包", price: "159" },
-                { img: "./img/大香蕉.jpg", name: "厚底老爹鞋", price: "179" },
-                { img: "./img/熊猫.jpg", name: "休闲双肩包", price: "99" }
+                { img: "./img/哈士奇.jpg", name: "百搭小白鞋", price: "129", id: "jewelry-1" },
+                { img: "./img/熊猫.jpg", name: "时尚单肩女包", price: "159", id: "jewelry-2" },
+                { img: "./img/大香蕉.jpg", name: "厚底老爹鞋", price: "179", id: "jewelry-3" },
+                { img: "./img/熊猫.jpg", name: "休闲双肩包", price: "99", id: "jewelry-4" }
             ],
             Hat: [
-                { img: "./img/哈士奇.jpg", name: "智能电饭煲", price: "299" },
-                { img: "./img/熊猫.jpg", name: "无线吸尘器", price: "499" },
-                { img: "./img/大香蕉.jpg", name: "充电电动牙刷", price: "129" },
-                { img: "./img/熊猫.jpg", name: "多功能空气炸锅", price: "329" }
+                { img: "./img/哈士奇.jpg", name: "智能电饭煲", price: "299", id: "hat-1" },
+                { img: "./img/熊猫.jpg", name: "无线吸尘器", price: "499", id: "hat-2" },
+                { img: "./img/大香蕉.jpg", name: "充电电动牙刷", price: "129", id: "hat-3" },
+                { img: "./img/熊猫.jpg", name: "多功能空气炸锅", price: "329", id: "hat-4" }
             ],
             Backpack: [
-                { img: "./img/哈士奇.jpg", name: "新鲜奶油草莓", price: "49" },
-                { img: "./img/熊猫.jpg", name: "农家散养土鸡蛋", price: "39" },
-                { img: "./img/大香蕉.jpg", name: "鲜活深海大虾", price: "129" },
-                { img: "./img/熊猫.jpg", name: "原切雪花牛肉", price: "199" }
+                { img: "./img/哈士奇.jpg", name: "新鲜奶油草莓", price: "49", id: "backpack-1" },
+                { img: "./img/熊猫.jpg", name: "农家散养土鸡蛋", price: "39", id: "backpack-2" },
+                { img: "./img/大香蕉.jpg", name: "鲜活深海大虾", price: "129", id: "backpack-3" },
+                { img: "./img/熊猫.jpg", name: "原切雪花牛肉", price: "199", id: "backpack-4" }
             ]
         }
 
         let pageStack = ['home'];
+        let slideInterval;
+        // 购物车数据（从本地存储读取，没有则初始化空数组）
+        let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+        // 当前选中的商品（详情页用）
+        let currentGoods = null;
 
-        let slides = document.querySelectorAll('.slide');
-        let i = 0;
-        setInterval(() => {
-            slides[i].classList.remove('active');
-            i = (i + 1) % slides.length;
-            slides[i].classList.add('active');
-        }, 3000);
+        // 初始化轮播
+        function initSwiper() {
+            let slides = document.querySelectorAll('.slide');
+            let i = 0;
+
+            if (slideInterval) clearInterval(slideInterval);
+
+            slideInterval = setInterval(() => {
+                slides[i].classList.remove('active');
+                i = (i + 1) % slides.length;
+                slides[i].classList.add('active');
+            }, 3000);
+        }
+
+        // 页面加载完成后初始化
+        window.addEventListener('DOMContentLoaded', function () {
+            initSwiper();
+            initTouchCloseBigImg();
+            // 初始化购物车
+            updateCartUI();
+        });
 
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -427,6 +694,8 @@
         }
 
         function goBack() {
+            closeBigImg();
+
             if (pageStack.length > 1) {
                 pageStack.pop();
                 showPage(pageStack[pageStack.length - 1]);
@@ -434,40 +703,259 @@
         }
 
         function goCat(name) {
+            if (!catData[name]) {
+                alert('该分类暂无商品');
+                return;
+            }
+
             document.getElementById('catName').innerText = name;
             const list = document.getElementById('catList');
             list.innerHTML = '';
 
+            let html = '';
             catData[name].forEach(goods => {
-                list.innerHTML += `
-      <div class="cat-goods-item" onclick='goToDetail(${JSON.stringify(goods)})'>
-        <img src="${goods.img}" class="cat-goods-img">
-        <div class="cat-goods-info">
-          <div class="cat-goods-name">${goods.name}</div>
-          <div class="cat-goods-price">${goods.price}</div>
-        </div>
-      </div>
-    `;
-            })
+                html += `
+                    <div class="cat-goods-item" onclick='goToDetail(${JSON.stringify(goods)})'>
+                        <img src="${goods.img}" class="cat-goods-img" alt="${goods.name}" onerror="this.src='https://via.placeholder.com/180x180?text=Product+Image'">
+                        <div class="cat-goods-info">
+                            <div class="cat-goods-name">${goods.name}</div>
+                            <div class="cat-goods-price">${goods.price}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            list.innerHTML = html;
 
             navigateTo('category');
         }
 
         function goToDetail(goods) {
+            if (!goods || !goods.img || !goods.name) {
+                alert('商品信息异常');
+                return;
+            }
+
+            // 保存当前选中的商品
+            currentGoods = goods;
+
             document.getElementById('detailImg').src = goods.img;
             document.getElementById('detailName').innerText = goods.name;
-            document.getElementById('detailPrice').innerText = `${goods.price}`;
+            document.getElementById('detailPrice').innerText = goods.price;
             navigateTo('detail');
         }
 
         // 大图查看
         function openBigImg(src) {
             document.getElementById('bigImg').src = src;
-            document.getElementById('bigImgModal').style.display = 'flex';
+            const modal = document.getElementById('bigImgModal');
+            modal.style.display = 'flex';
+            modal.querySelector('.modal-img').onclick = function (e) {
+                e.stopPropagation();
+            };
         }
+
         function closeBigImg() {
             document.getElementById('bigImgModal').style.display = 'none';
         }
+
+        // 初始化触摸滑动关闭大图
+        function initTouchCloseBigImg() {
+            const modal = document.getElementById('bigImgModal');
+            let startY = 0;
+
+            modal.addEventListener('touchstart', function (e) {
+                startY = e.touches[0].clientY;
+            });
+
+            modal.addEventListener('touchend', function (e) {
+                const endY = e.changedTouches[0].clientY;
+                if (Math.abs(endY - startY) > 50) {
+                    closeBigImg();
+                }
+            });
+        }
+
+        // ===== 购物车核心功能 =====
+
+        // 跳转到购物车页面
+        function goToCart() {
+            renderCartList();
+            navigateTo('cart');
+        }
+
+        // 加入购物车
+        function addToCart() {
+            if (!currentGoods) {
+                alert('请选择商品');
+                return;
+            }
+
+            // 检查商品是否已在购物车
+            const existingItemIndex = cartItems.findIndex(item => item.id === currentGoods.id);
+
+            if (existingItemIndex > -1) {
+                // 已存在，数量+1
+                cartItems[existingItemIndex].quantity += 1;
+            } else {
+                // 不存在，添加新商品
+                cartItems.push({
+                    ...currentGoods,
+                    quantity: 1
+                });
+            }
+
+            // 保存到本地存储
+            localStorage.setItem('cartItems', JSON.stringify(cartItems));
+
+            // 更新UI
+            updateCartUI();
+
+            // 提示
+            alert('加入购物车成功！');
+        }
+
+        // 增加购物车商品数量
+        function increaseCartItem(id) {
+            const itemIndex = cartItems.findIndex(item => item.id === id);
+            if (itemIndex > -1) {
+                cartItems[itemIndex].quantity += 1;
+                saveCartAndUpdateUI();
+            }
+        }
+
+        // 减少购物车商品数量
+        function decreaseCartItem(id) {
+            const itemIndex = cartItems.findIndex(item => item.id === id);
+            if (itemIndex > -1) {
+                if (cartItems[itemIndex].quantity > 1) {
+                    cartItems[itemIndex].quantity -= 1;
+                } else {
+                    // 数量为1时，删除商品
+                    cartItems.splice(itemIndex, 1);
+                }
+                saveCartAndUpdateUI();
+            }
+        }
+
+        // 删除购物车商品
+        function deleteCartItem(id) {
+            if (confirm('确定要删除该商品吗？')) {
+                cartItems = cartItems.filter(item => item.id !== id);
+                saveCartAndUpdateUI();
+            }
+        }
+
+        // 保存购物车并更新UI
+        function saveCartAndUpdateUI() {
+            localStorage.setItem('cartItems', JSON.stringify(cartItems));
+            updateCartUI();
+            renderCartList();
+        }
+
+        // 更新购物车UI（角标、总价）
+        function updateCartUI() {
+            // 更新购物车角标
+            const totalCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartBadge').textContent = totalCount;
+
+            // 计算总价（简化处理，仅提取数字部分）
+            calculateCartTotal();
+        }
+
+        // 计算购物车总价
+        function calculateCartTotal() {
+            let total = 0;
+
+            cartItems.forEach(item => {
+                // 提取价格中的数字（简化处理，取第一个数字）
+                const priceMatch = item.price.match(/\d+/);
+                if (priceMatch) {
+                    const price = parseFloat(priceMatch[0]);
+                    total += price * item.quantity;
+                }
+            });
+
+            // 更新总价显示
+            if (document.getElementById('cartTotalPrice')) {
+                document.getElementById('cartTotalPrice').textContent = `JMB: ${total}`;
+            }
+
+            return total;
+        }
+
+        // 渲染购物车列表
+        function renderCartList() {
+            const cartList = document.getElementById('cartList');
+            const cartEmpty = document.getElementById('cartEmpty');
+            const cartFooter = document.getElementById('cartFooter');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+
+            // 清空列表
+            cartList.innerHTML = '';
+
+            if (cartItems.length === 0) {
+                // 购物车为空
+                cartEmpty.style.display = 'block';
+                cartFooter.style.display = 'none';
+            } else {
+                // 购物车有商品
+                cartEmpty.style.display = 'none';
+                cartFooter.style.display = 'flex';
+
+                // 渲染商品列表
+                let html = '';
+                cartItems.forEach(item => {
+                    // 核心修改：给购物车商品条目添加点击事件，跳转到详情页
+                    html += `
+                        <div class="cart-item" onclick="openCartItemDetail('${item.id}')">
+                            <img src="${item.img}" class="cart-item-img" alt="${item.name}" onerror="this.src='https://via.placeholder.com/80x80?text=Product'">
+                            <div class="cart-item-info">
+                                <div>
+                                    <div class="cart-item-name">${item.name}</div>
+                                    <div class="cart-item-price">${item.price}</div>
+                                </div>
+                                <div class="cart-item-control">
+                                    <button class="cart-btn" onclick="event.stopPropagation(); decreaseCartItem('${item.id}')">-</button>
+                                    <span class="cart-count">${item.quantity}</span>
+                                    <button class="cart-btn" onclick="event.stopPropagation(); increaseCartItem('${item.id}')">+</button>
+                                    <span class="cart-delete" onclick="event.stopPropagation(); deleteCartItem('${item.id}')">删除</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                cartList.innerHTML = html;
+
+                // 更新总价
+                calculateCartTotal();
+
+                // 启用结算按钮
+                checkoutBtn.disabled = false;
+            }
+        }
+
+        // 新增：打开购物车商品详情页
+        function openCartItemDetail(id) {
+            // 根据商品ID查找完整的商品信息
+            const goods = cartItems.find(item => item.id === id);
+            if (goods) {
+                // 调用已有的详情页函数
+                goToDetail(goods);
+            }
+        }
+
+        // 结算按钮点击事件
+        document.getElementById('checkoutBtn').addEventListener('click', function () {
+            const total = calculateCartTotal();
+            alert(`结算成功！您需要支付: JMB: ${total}\n感谢您的购买！`);
+
+            // 清空购物车
+            cartItems = [];
+            localStorage.setItem('cartItems', JSON.stringify(cartItems));
+            updateCartUI();
+            renderCartList();
+        });
     </script>
 </body>
 

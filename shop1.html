@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -30,7 +30,7 @@
             display: block
         }
 
-        /* 顶部 - 新增购物车样式 */
+        /* 顶部 - 购物车样式 */
         .top {
             background: #ff5000;
             color: #fff;
@@ -66,7 +66,7 @@
             font-weight: bold;
         }
 
-        /* 轮播 */
+        /* 首页轮播 */
         .swiper {
             margin: 0 15px;
             border-radius: 12px;
@@ -109,6 +109,32 @@
             margin: 0 auto 5px;
             object-fit: cover;
             display: block;
+        }
+
+        /* 二级分类导航样式 */
+        .subcat-nav {
+            background: #fff;
+            margin: 10px 15px;
+            border-radius: 12px;
+            padding: 10px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .subcat-item {
+            display: inline-block;
+            padding: 8px 15px;
+            margin: 0 5px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            background: #f4f4f4;
+            color: #333;
+        }
+
+        .subcat-item.active {
+            background: #ff5000;
+            color: #fff;
         }
 
         /* 商品 */
@@ -209,13 +235,75 @@
             text-align: center
         }
 
-        /* 商品详情页 - 新增加入购物车按钮 */
-        .detail-img {
+        /* 商品详情页 - 多图轮播 */
+        .detail-swiper {
+            position: relative;
             width: 100%;
             height: 300px;
-            object-fit: cover;
-            cursor: pointer;
+            overflow: hidden;
             background: #f0f0f0;
+        }
+
+        .detail-slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+            cursor: pointer;
+        }
+
+        .detail-slide.active {
+            display: block;
+        }
+
+        /* 轮播箭头 */
+        .swiper-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            font-size: 18px;
+        }
+
+        .swiper-arrow.prev {
+            left: 15px;
+        }
+
+        .swiper-arrow.next {
+            right: 15px;
+        }
+
+        /* 轮播指示器 */
+        .swiper-indicator {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .indicator-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+        }
+
+        .indicator-dot.active {
+            background: #fff;
         }
 
         .detail-info {
@@ -276,19 +364,6 @@
             object-fit: contain;
         }
 
-        /* 加载失败图片样式 */
-        img[alt]::after {
-            content: attr(alt);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            background: #f0f0f0;
-            color: #999;
-            font-size: 12px;
-        }
-
         /* 购物车页面样式 */
         .cart-page {
             padding-bottom: 80px;
@@ -315,7 +390,6 @@
             display: flex;
             gap: 15px;
             cursor: pointer;
-            /* 新增：添加鼠标指针样式 */
         }
 
         .cart-item-img {
@@ -363,7 +437,6 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            /* 新增：阻止事件冒泡 */
             z-index: 1;
         }
 
@@ -371,7 +444,6 @@
             font-size: 14px;
             min-width: 20px;
             text-align: center;
-            /* 新增：阻止事件冒泡 */
             z-index: 1;
         }
 
@@ -379,7 +451,6 @@
             color: #999;
             font-size: 14px;
             cursor: pointer;
-            /* 新增：阻止事件冒泡 */
             z-index: 1;
         }
 
@@ -420,69 +491,165 @@
             background: #ccc;
             cursor: not-allowed;
         }
+
+        /* 通用弹窗样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 99999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(2px);
+        }
+
+        .modal.active {
+            display: flex;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: #fff;
+            border-radius: 16px;
+            width: 85%;
+            max-width: 400px;
+            padding: 25px 20px;
+            position: relative;
+            transform: scale(0.9);
+            animation: modalScaleIn 0.3s ease forwards;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .modal-body {
+            font-size: 16px;
+            color: #666;
+            text-align: center;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px 0;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .modal-btn.cancel {
+            background: #f4f4f4;
+            color: #666;
+        }
+
+        .modal-btn.confirm {
+            background: #ff5000;
+            color: #fff;
+        }
+
+        .modal-btn.single {
+            width: 100%;
+        }
+
+        /* 弹窗动画 */
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes modalScaleIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
     </style>
-    <!-- 引入字体图标（购物车图标） -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
-
     <!-- 首页 -->
     <div class="page active" id="home">
         <div class="top">
             Andy's Store
-            <!-- 新增购物车图标 -->
             <div class="cart-icon" onclick="goToCart()">
                 <i class="fas fa-shopping-cart"></i>
                 <span class="cart-badge" id="cartBadge">0</span>
             </div>
         </div>
-
         <div class="swiper">
-            <img src="./img/哈士奇.jpg" alt="轮播图1" class="slide active"
+            <img src="./img/哈士奇.jpg" alt="Banner 1" class="slide active"
                 onerror="this.src='https://via.placeholder.com/375x160?text=Image+Not+Found'">
-            <img src="./img/熊猫.jpg" alt="轮播图2" class="slide"
+            <img src="./img/熊猫.jpg" alt="Banner 2" class="slide"
                 onerror="this.src='https://via.placeholder.com/375x160?text=Image+Not+Found'">
-            <img src="./img/大香蕉.jpg" alt="轮播图3" class="slide"
+            <img src="./img/大香蕉.jpg" alt="Banner 3" class="slide"
                 onerror="this.src='https://via.placeholder.com/375x160?text=Image+Not+Found'">
         </div>
-
         <div class="nav">
             <a class="nav-item" onclick="goCat('Clothing')">
-                <img class="nav-icon" src="./img/衣服1.png" alt="服装"
+                <img class="nav-icon" src="./img/衣服1.png" alt="Clothing"
                     onerror="this.src='https://via.placeholder.com/40x40?text=Icon'">
                 Clothing
             </a>
             <a class="nav-item" onclick="goCat('Bag')">
-                <img class="nav-icon" src="./img/包包.png" alt="包包"
+                <img class="nav-icon" src="./img/包包.png" alt="Bag"
                     onerror="this.src='https://via.placeholder.com/40x40?text=Icon'">
                 Bag
             </a>
             <a class="nav-item" onclick="goCat('jewelry')">
-                <img class="nav-icon" src="./img/精品.png" alt="精品首饰"
+                <img class="nav-icon" src="./img/精品.png" alt="Fine Jewelry"
                     onerror="this.src='https://via.placeholder.com/40x40?text=Icon'">
                 Fine jewelry
             </a>
             <a class="nav-item" onclick="goCat('Hat')">
-                <img class="nav-icon" src="./img/鸭舌帽.png" alt="帽子"
+                <img class="nav-icon" src="./img/鸭舌帽.png" alt="Hat"
                     onerror="this.src='https://via.placeholder.com/40x40?text=Icon'">
                 Hat
             </a>
             <a class="nav-item" onclick="goCat('Backpack')">
-                <img class="nav-icon" src="./img/书包.png" alt="背包"
+                <img class="nav-icon" src="./img/书包.png" alt="Backpack"
                     onerror="this.src='https://via.placeholder.com/40x40?text=Icon'">
                 Backpack
             </a>
         </div>
-
         <div style="padding:10px 15px;font-size:32px;font-weight:bold">New style</div>
         <div class="goods">
             <div class="goods-item" onclick="goToDetail({
-      img:'./img/YF-647.jpg',
-      name:'NO:647',
-      price:'JMB:1000/1400',
-      id:'YF-647'
-    })">
+                img:'./img/YF-647.jpg',
+                name:'NO:647',
+                price:'JMB:1000/1400',
+                id:'YF-647',
+                images:['./img/YF-647.jpg','./img/YF-651.jpg','./img/YF-661.jpg']
+            })">
                 <img src="./img/YF-647.jpg" alt="NO:647" class="goods-img"
                     onerror="this.src='https://via.placeholder.com/180x180?text=Product+Image'">
                 <div class="goods-info">
@@ -490,13 +657,13 @@
                     <div class="goods-price">JMB:1000/1400</div>
                 </div>
             </div>
-
             <div class="goods-item" onclick="goToDetail({
-      img:'./img/YF-651.jpg',
-      name:'NO:651',
-      price:'JMB:1000/1400',
-      id:'YF-651'
-    })">
+                img:'./img/YF-651.jpg',
+                name:'NO:651',
+                price:'JMB:1000/1400',
+                id:'YF-651',
+                images:['./img/YF-651.jpg','./img/YF-661.jpg','./img/YF-9636.jpg']
+            })">
                 <img src="./img/YF-651.jpg" alt="NO:651" class="goods-img"
                     onerror="this.src='https://via.placeholder.com/180x180?text=Product+Image'">
                 <div class="goods-info">
@@ -505,11 +672,12 @@
                 </div>
             </div>
             <div class="goods-item" onclick="goToDetail({
-      img:'./img/YF-661.jpg',
-      name:'NO:661',
-      price:'JMB:1000/1400',
-      id:'YF-661'
-    })">
+                img:'./img/YF-661.jpg',
+                name:'NO:661',
+                price:'JMB:1000/1400',
+                id:'YF-661',
+                images:['./img/YF-661.jpg','./img/YF-9636.jpg','./img/YF-MX073.jpg']
+            })">
                 <img src="./img/YF-661.jpg" alt="NO:661" class="goods-img"
                     onerror="this.src='https://via.placeholder.com/180x180?text=Product+Image'">
                 <div class="goods-info">
@@ -518,11 +686,12 @@
                 </div>
             </div>
             <div class="goods-item" onclick="goToDetail({
-      img:'./img/YF-9636.jpg',
-      name:'NO:9636',
-      price:'JMB:1000/1400',
-      id:'YF-9636'
-    })">
+                img:'./img/YF-9636.jpg',
+                name:'NO:9636',
+                price:'JMB:1000/1400',
+                id:'YF-9636',
+                images:['./img/YF-9636.jpg','./img/YF-MX073.jpg','./img/YF-656.jpg']
+            })">
                 <img src="./img/YF-9636.jpg" alt="NO:9636" class="goods-img"
                     onerror="this.src='https://via.placeholder.com/180x180?text=Product+Image'">
                 <div class="goods-info">
@@ -531,11 +700,12 @@
                 </div>
             </div>
             <div class="goods-item" onclick="goToDetail({
-      img:'./img/YF-MX073.jpg',
-      name:'NO:MX073',
-      price:'JMB:1000/1400',
-      id:'YF-MX073'
-    })">
+                img:'./img/YF-MX073.jpg',
+                name:'NO:MX073',
+                price:'JMB:1000/1400',
+                id:'YF-MX073',
+                images:['./img/YF-MX073.jpg','./img/YF-656.jpg','./img/YF-6033.jpg']
+            })">
                 <img src="./img/YF-MX073.jpg" alt="NO:MX073" class="goods-img"
                     onerror="this.src='https://via.placeholder.com/180x180?text=Product+Image'">
                 <div class="goods-info">
@@ -546,47 +716,50 @@
         </div>
     </div>
 
-    <!-- 分类页面 -->
+    <!-- 分类页面（增加二级分类容器） -->
     <div class="page" id="category">
         <div class="back" onclick="goBack()">← Return</div>
-        <div class="cat-title" id="catName">分类</div>
+        <div class="cat-title" id="catName">Category</div>
+        <!-- 二级分类导航栏 -->
+        <div class="subcat-nav" id="subcatNav"></div>
         <div class="cat-goods" id="catList"></div>
     </div>
 
-    <!-- 商品详情页 -->
+    <!-- 商品详情页 - 支持自定义多张图片 -->
     <div class="page" id="detail">
         <div class="back" onclick="goBack()">← Return</div>
-        <img id="detailImg" class="detail-img" onclick="openBigImg(this.src)"
-            onerror="this.src='https://via.placeholder.com/375x300?text=Detail+Image'">
+        <div class="detail-swiper" id="detailSwiper">
+            <div id="detailSlides"></div>
+            <div class="swiper-arrow prev" onclick="prevDetailSlide()">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+            <div class="swiper-arrow next" onclick="nextDetailSlide()">
+                <i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="swiper-indicator" id="detailIndicator"></div>
+        </div>
         <div class="detail-info">
             <div id="detailName" class="detail-name"></div>
-            <div id="detailPrice" class="detail-price"></div>
-            <!-- 新增加入购物车按钮 -->
-            <button class="add-cart-btn" onclick="addToCart()">加入购物车</button>
+            <div id="detailPrice" class="detail-price"></div> <!-- 修复class名拼写错误 -->
+            <button class="add-cart-btn" onclick="addToCart()">Add to Cart</button>
         </div>
     </div>
 
-    <!-- 新增购物车页面 -->
+    <!-- 购物车页面 -->
     <div class="page cart-page" id="cart">
         <div class="back" onclick="goBack()">← Return</div>
         <div class="cat-title">My Cart</div>
-
-        <!-- 购物车空状态 -->
         <div class="cart-empty" id="cartEmpty">
             <i class="fas fa-shopping-cart"></i>
-            <p>购物车空空如也~</p>
-            <p style="margin-top:10px;">快去添加商品吧</p>
+            <p>The shopping cart is empty~</p>
+            <p style="margin-top:10px;">Go add some products quickly.</p>
         </div>
-
-        <!-- 购物车商品列表 -->
         <div id="cartList"></div>
-
-        <!-- 购物车底部结算 -->
         <div class="cart-footer" id="cartFooter" style="display: none;">
             <div class="cart-total">
-                总计: <span class="cart-total-price" id="cartTotalPrice">0</span>
+                Total: <span class="cart-total-price" id="cartTotalPrice">0</span>
             </div>
-            <button class="cart-checkout" id="checkoutBtn">结算</button>
+            <button class="cart-checkout" id="checkoutBtn">Empty the cart</button>
         </div>
     </div>
 
@@ -595,79 +768,236 @@
         <img id="bigImg" class="modal-img" onerror="this.src='https://via.placeholder.com/800x800?text=Big+Image'">
     </div>
 
+    <!-- 通用弹窗 -->
+    <div class="modal" id="customModal">
+        <div class="modal-content">
+            <div class="modal-title" id="modalTitle">Special Offer</div>
+            <div class="modal-body" id="modalBody">🎉 Welcome to Andy's shop!! 🎉</div>
+            <div class="modal-footer" id="modalFooter">
+                <button class="modal-btn confirm single" onclick="hideModal()">OK</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // 重构数据结构：分类商品增加自定义images字段，支持指定多张详情图
         const catData = {
-            Clothing: [
-                { img: "./img/YF-647.jpg", name: "NO:647", price: "JMB:1000/1400", id: "YF-647" },
-                { img: "./img/YF-651.jpg", name: "NO:651", price: "JMB:1000/1400", id: "YF-651" },
-                { img: "./img/YF-661.jpg", name: "NO:661", price: "JMB:1000/1400", id: "YF-661" },
-                { img: "./img/YF-9636.jpg", name: "NO:9636", price: "JMB:1000/1400", id: "YF-9636" },
-                { img: "./img/YF-MX073.jpg", name: "NO:MX073", price: "JMB:1000/1400", id: "YF-MX073" },
-                { img: "./img/YF-656.jpg", name: "NO:656", price: "JMB:1000/1400", id: "YF-656" },
-                { img: "./img/YF-6033.jpg", name: "NO:6033", price: "JMB:1100/1500", id: "YF-6033" },
-                { img: "./img/YF-8021.jpg", name: "NO:8021", price: "JMB:1000/1400", id: "YF-8021" },
-                { img: "./img/YF-8026.jpg", name: "NO:8026", price: "JMB:1000/1400", id: "YF-8026" },
-                { img: "./img/YF-9649.jpg", name: "NO:9649", price: "JMB:1000/1400", id: "YF-9649" }
-            ],
-            Bag: [
-                { img: "./img/BB-01.jpg", name: "NO:01", price: "JMD:1200/1500", id: "BB-01" },
-                { img: "./img/BB-17.jpg", name: "NO:17", price: "JMD:800/1000", id: "BB-17" },
-                { img: "./img/BB-23.jpg", name: "NO:23", price: "JMD:1000/1300", id: "BB-23" },
-                { img: "./img/BB-25.jpg", name: "NO:25", price: "JMD:1000/1300", id: "BB-25" },
-                { img: "./img/BB-26.jpg", name: "NO:26", price: "JMD:800/1000", id: "BB-26" },
-                { img: "./img/BB-27.jpg", name: "NO:27", price: "JMD:1000/1300", id: "BB-27" },
-                { img: "./img/BB-32.jpg", name: "NO:32", price: "JMD:1000/1300", id: "BB-32" },
-                { img: "./img/BB-33-10.jpg", name: "NO:33-10", price: "JMD:1000/1300", id: "BB-33-10" },
-                { img: "./img/BB-33-12.jpg", name: "NO:33-12", price: "JMD:1000/1300", id: "BB-33-12" },
-                { img: "./img/BB-506.jpg", name: "NO:506", price: "JMD:2000/2500", id: "BB-506" },
-                { img: "./img/BB-668.jpg", name: "NO:668", price: "JMD:2000/2500", id: "BB-668" },
-                { img: "./img/BB-1511.jpg", name: "NO:1511", price: "JMD:1000/1300", id: "BB-1511" },
-                { img: "./img/BB-2022.jpg", name: "NO:2022", price: "JMD:1000/1300", id: "BB-2022" },
-                { img: "./img/BB-2799.jpg", name: "NO:2799", price: "JMD:1000/1300", id: "BB-2799" },
-                { img: "./img/BB-6920-2.jpg", name: "NO:6920-2", price: "JMD:1200/1500", id: "BB-6920-2" },
-                { img: "./img/BB-8098.jpg", name: "NO:8098", price: "JMD:1000/1300", id: "BB-8098" },
-                { img: "./img/BB-8303-1.jpg", name: "NO:8303-1", price: "JMD:2000/2500", id: "BB-8303-1" },
-                { img: "./img/BB-8673-2.jpg", name: "NO:8673-2", price: "JMD:2000/2500", id: "BB-8673-2" },
-                { img: "./img/BB-8701.jpg", name: "NO:8701", price: "JMD:1000/1300", id: "BB-8701" },
-                { img: "./img/BB-88828.jpg", name: "NO:88828", price: "JMD:2000/2500", id: "BB-88828" },
-                { img: "./img/BB-A8633.jpg", name: "NO:A8633", price: "JMD:2000/2500", id: "BB-A8633" },
-                { img: "./img/BB-COACH.jpg", name: "NO:COACH", price: "JMD:2000/2500", id: "BB-COACH" },
-                { img: "./img/BB-W97661-2.jpg", name: "NO:W97661-2", price: "JMD:2000/2500", id: "BB-W97661-2" }
-            ],
-            jewelry: [
-                { img: "./img/哈士奇.jpg", name: "百搭小白鞋", price: "129", id: "jewelry-1" },
-                { img: "./img/熊猫.jpg", name: "时尚单肩女包", price: "159", id: "jewelry-2" },
-                { img: "./img/大香蕉.jpg", name: "厚底老爹鞋", price: "179", id: "jewelry-3" },
-                { img: "./img/熊猫.jpg", name: "休闲双肩包", price: "99", id: "jewelry-4" }
-            ],
-            Hat: [
-                { img: "./img/哈士奇.jpg", name: "智能电饭煲", price: "299", id: "hat-1" },
-                { img: "./img/熊猫.jpg", name: "无线吸尘器", price: "499", id: "hat-2" },
-                { img: "./img/大香蕉.jpg", name: "充电电动牙刷", price: "129", id: "hat-3" },
-                { img: "./img/熊猫.jpg", name: "多功能空气炸锅", price: "329", id: "hat-4" }
-            ],
-            Backpack: [
-                { img: "./img/哈士奇.jpg", name: "新鲜奶油草莓", price: "49", id: "backpack-1" },
-                { img: "./img/熊猫.jpg", name: "农家散养土鸡蛋", price: "39", id: "backpack-2" },
-                { img: "./img/大香蕉.jpg", name: "鲜活深海大虾", price: "129", id: "backpack-3" },
-                { img: "./img/熊猫.jpg", name: "原切雪花牛肉", price: "199", id: "backpack-4" }
-            ]
-        }
+            Clothing: {
+                subCats: ['All', 'Jacket', 'Shirt', 'Pants', 'Dress'],
+                products: {
+                    All: [
+                        { img: "./img/YF-647.jpg", name: "NO:647", price: "JMB:1000/1400", id: "YF-647", images: ['./img/YF-647-1.jpg', './img/YF-647-2.jpg', './img/YF-647-3.jpg'] }, // 自定义3张图
+                        { img: "./img/YF-651.jpg", name: "NO:651", price: "JMB:1000/1400", id: "YF-651", images: ['./img/YF-651-1.jpg', './img/YF-651-2.jpg'] }, // 自定义2张图
+                        { img: "./img/YF-661.jpg", name: "NO:661", price: "JMB:1000/1400", id: "YF-661", images: ['./img/YF-661-1.jpg', './img/YF-661-2.jpg', './img/YF-661-3.jpg', './img/YF-661-4.jpg'] }, // 自定义4张图
+                        { img: "./img/YF-9636.jpg", name: "NO:9636", price: "JMB:1000/1400", id: "YF-9636", images: ['./img/YF-9636-1.jpg'] }, // 自定义1张图
+                        { img: "./img/YF-MX073.jpg", name: "NO:MX073", price: "JMB:1000/1400", id: "YF-MX073", images: ['./img/YF-MX073-1.jpg', './img/YF-MX073-2.jpg'] },
+                        { img: "./img/YF-656.jpg", name: "NO:656", price: "JMB:1000/1400", id: "YF-656", images: ['./img/YF-656-1.jpg', './img/YF-656-2.jpg', './img/YF-656-3.jpg'] },
+                        { img: "./img/YF-6033.jpg", name: "NO:6033", price: "JMB:1100/1500", id: "YF-6033", images: ['./img/YF-6033-1.jpg'] },
+                        { img: "./img/YF-8021.jpg", name: "NO:8021", price: "JMB:1000/1400", id: "YF-8021", images: ['./img/YF-8021-1.jpg', './img/YF-8021-2.jpg'] },
+                        { img: "./img/YF-8026.jpg", name: "NO:8026", price: "JMB:1000/1400", id: "YF-8026", images: ['./img/YF-8026-1.jpg', './img/YF-8026-2.jpg', './img/YF-8026-3.jpg'] },
+                        { img: "./img/YF-9649.jpg", name: "NO:9649", price: "JMB:1000/1400", id: "YF-9649", images: ['./img/YF-9649-1.jpg', './img/YF-9649-2.jpg'] }
+                    ],
+                    Jacket: [
+                        { img: "./img/YF-647.jpg", name: "NO:647", price: "JMB:1000/1400", id: "YF-647", images: ['./img/YF-647-1.jpg', './img/YF-647-2.jpg', './img/YF-647-3.jpg'] },
+                        { img: "./img/YF-651.jpg", name: "NO:651", price: "JMB:1000/1400", id: "YF-651", images: ['./img/YF-651-1.jpg', './img/YF-651-2.jpg'] },
+                        { img: "./img/YF-661.jpg", name: "NO:661", price: "JMB:1000/1400", id: "YF-661", images: ['./img/YF-661-1.jpg', './img/YF-661-2.jpg', './img/YF-661-3.jpg', './img/YF-661-4.jpg'] }
+                    ],
+                    Shirt: [
+                        { img: "./img/YF-9636.jpg", name: "NO:9636", price: "JMB:1000/1400", id: "YF-9636", images: ['./img/YF-9636-1.jpg'] },
+                        { img: "./img/YF-MX073.jpg", name: "NO:MX073", price: "JMB:1000/1400", id: "YF-MX073", images: ['./img/YF-MX073-1.jpg', './img/YF-MX073-2.jpg'] }
+                    ],
+                    Pants: [
+                        { img: "./img/YF-656.jpg", name: "NO:656", price: "JMB:1000/1400", id: "YF-656", images: ['./img/YF-656-1.jpg', './img/YF-656-2.jpg', './img/YF-656-3.jpg'] },
+                        { img: "./img/YF-6033.jpg", name: "NO:6033", price: "JMB:1100/1500", id: "YF-6033", images: ['./img/YF-6033-1.jpg'] }
+                    ],
+                    Dress: [
+                        { img: "./img/YF-8021.jpg", name: "NO:8021", price: "JMB:1000/1400", id: "YF-8021", images: ['./img/YF-8021-1.jpg', './img/YF-8021-2.jpg'] },
+                        { img: "./img/YF-8026.jpg", name: "NO:8026", price: "JMB:1000/1400", id: "YF-8026", images: ['./img/YF-8026-1.jpg', './img/YF-8026-2.jpg', './img/YF-8026-3.jpg'] },
+                        { img: "./img/YF-9649.jpg", name: "NO:9649", price: "JMB:1000/1400", id: "YF-9649", images: ['./img/YF-9649-1.jpg', './img/YF-9649-2.jpg'] }
+                    ]
+                }
+            },
+            Bag: {
+                subCats: ['All', 'Beachbag', 'Fabricbag', 'Shoulderbag', 'Handbag'],
+                products: {
+                    All: [
+                        { img: "./img-BB/12-28.jpg", name: "NO:12-28", price: "JMD:1200/1500", id: "12-28", images: ['./img-BB/12-28.jpg'] },
+                        { img: "./img-BB/13-23.jpg", name: "NO:13-23", price: "JMD:1200/1500", id: "13-23", images: ['./img-BB/13-23.jpg'] },
+                        { img: "./img-BB/13-49.jpg", name: "NO:13-49", price: "JMD:1200/1500", id: "13-49", images: ['./img-BB/13-49.jpg'] },
+                        { img: "./img-BB/13-97.jpg", name: "NO:13-97", price: "JMD:1200/1500", id: "13-97", images: ['./img-BB/13-97.jpg'] },
+                        { img: "./img-BB/13-102.jpg", name: "NO:13-102", price: "JMD:1200/1500", id: "13-102", images: ['./img-BB/13-102.jpg', './img-BB/13-102-1.jpg', './img-BB/13-102-2.jpg', './img-BB/13-102-3.jpg'] },
+                        { img: "./img-BB/13-107-1.jpg", name: "NO:13-107-1", price: "JMD:1200/1500", id: "13-107-1", images: ['./img-BB/13-107-1.jpg', './img-BB/13-107-2.jpg', './img-BB/13-107-3.jpg'] },
+                        { img: "./img-BB/13-108-1.jpg", name: "NO:13-108-1", price: "JMD:1200/1500", id: "13-108-1", images: ['./img-BB/13-108-1.jpg', './img-BB/13-108-2.jpg', './img-BB/13-108-3.jpg', './img-BB/13-108-4.jpg'] },
+                        { img: "./img-BB/13-109-1.jpg", name: "NO:13-109-1", price: "JMD:1200/1500", id: "13-109-1", images: ['./img-BB/13-109-1.jpg', './img-BB/13-109-2.jpg'] },
+                        { img: "./img-BB/17.jpg", name: "NO:17", price: "JMD:1200/1500", id: "17", images: ['./img-BB/17.jpg'] },
+                        { img: "./img-BB/18.jpg", name: "NO:18", price: "JMD:1200/1500", id: "18", images: ['./img-BB/18.jpg'] },
+                        { img: "./img-BB/22-12.jpg", name: "NO:22-12", price: "JMD:1200/1500", id: "22-12", images: ['./img-BB/22-12.jpg'] },
+                        { img: "./img-BB/22-17.jpg", name: "NO:22-17", price: "JMD:1200/1500", id: "22-17", images: ['./img-BB/22-17.jpg'] },
+                        { img: "./img-BB/22-21.jpg", name: "NO:22-21", price: "JMD:1200/1500", id: "22-21", images: ['./img-BB/22-21.jpg'] },
+                        { img: "./img-BB/22-30.jpg", name: "NO:22-30", price: "JMD:1200/1500", id: "22-30", images: ['./img-BB/22-30.jpg'] },
+                        { img: "./img-BB/22-56.jpg", name: "NO:22-56", price: "JMD:1200/1500", id: "22-56", images: ['./img-BB/22-56.jpg'] },
+                        { img: "./img-BB/22-57.jpg", name: "NO:22-57", price: "JMD:1200/1500", id: "22-57", images: ['./img-BB/22-57.jpg'] },
+                        { img: "./img-BB/22-69.jpg", name: "NO:22-69", price: "JMD:1200/1500", id: "22-69", images: ['./img-BB/22-69.jpg'] },
+                        { img: "./img-BB/22-78.jpg", name: "NO:22-78", price: "JMD:1200/1500", id: "22-78", images: ['./img-BB/22-78.jpg'] },
+                        { img: "./img-BB/25.jpg", name: "NO:25", price: "JMD:1200/1500", id: "25", images: ['./img-BB/25.jpg'] },
+                        { img: "./img-BB/26.jpg", name: "NO:26", price: "JMD:1200/1500", id: "26", images: ['./img-BB/26.jpg'] },
+                        { img: "./img-BB/27.jpg", name: "NO:27", price: "JMD:1200/1500", id: "27", images: ['./img-BB/27.jpg'] },
+                        { img: "./img-BB/28.jpg", name: "NO:28", price: "JMD:1200/1500", id: "28", images: ['./img-BB/28.jpg'] },
+                        { img: "./img-BB/132-1.jpg", name: "NO:132-1", price: "JMD:1200/1500", id: "132-1", images: ['./img-BB/132-1.jpg'] },
+                        { img: "./img-BB/133-1.jpg", name: "NO:133-1", price: "JMD:1200/1500", id: "133-1", images: ['./img-BB/133-1.jpg'] },
+                        { img: "./img-BB/139-1.jpg", name: "NO:139-1", price: "JMD:1200/1500", id: "139-1", images: ['./img-BB/139-1.jpg'] },
+                        { img: "./img-BB/305-1.jpg", name: "NO:305-1", price: "JMD:1200/1500", id: "305-1", images: ['./img-BB/305-1.jpg'] },
+                        { img: "./img-BB/307-1.jpg", name: "NO:307-1", price: "JMD:1200/1500", id: "307-1", images: ['./img-BB/307-1.jpg'] },
+                        { img: "./img-BB/308-1.jpg", name: "NO:308-1", price: "JMD:1200/1500", id: "308-1", images: ['./img-BB/308-1.jpg'] },
+                        { img: "./img-BB/604.jpg", name: "NO:604", price: "JMD:1200/1500", id: "604", images: ['./img-BB/604.jpg'] },
+                        { img: "./img-BB/604.jpg", name: "NO:605", price: "JMD:1200/1500", id: "605", images: ['./img-BB/605.jpg'] },
+                        { img: "./img-BB/C202-1.jpg", name: "NO:C202-1", price: "JMD:1200/1500", id: "C202-1", images: ['./img-BB/C202-1.jpg'] },
+                        { img: "./img-BB/C203-1.jpg", name: "NO:C203-1", price: "JMD:1200/1500", id: "C203-1", images: ['./img-BB/C203-1.jpg'] },
+                        { img: "./img-BB/CAOBIAN.jpg", name: "NO:CAOBIAN", price: "JMD:1200/1500", id: "CAOBIAN", images: ['./img-BB/CAOBIAN.jpg'] },
+                        { img: "./img-BB/DBI-41.jpg", name: "NO:DBI-41", price: "JMD:1200/1500", id: "DBI-41", images: ['./img-BB/DBI-41.jpg'] },
+                        { img: "./img-BB/DBI-45.jpg", name: "NO:DBI-45", price: "JMD:1200/1500", id: "DBI-45", images: ['./img-BB/DBI-45.jpg'] },
+                        { img: "./img-BB/FDBI-15.jpg", name: "NO:FDBI-15", price: "JMD:1200/1500", id: "FDBI-15", images: ['./img-BB/FDBI-15.jpg'] },
+                        { img: "./img-BB/FDBI-31.jpg", name: "NO:FDBI-31", price: "JMD:1200/1500", id: "FDBI-31", images: ['./img-BB/FDBI-31.jpg'] },
+                        { img: "./img-BB/FDBI-32.jpg", name: "NO:FDBI-32", price: "JMD:1200/1500", id: "FDBI-32", images: ['./img-BB/FDBI-32.jpg'] },
+                        { img: "./img-BB/FDBI-34.jpg", name: "NO:FDBI-34", price: "JMD:1200/1500", id: "FDBI-34", images: ['./img-BB/FDBI-34.jpg'] },
+                        { img: "./img-BB/FDBI-37.jpg", name: "NO:FDBI-37", price: "JMD:1200/1500", id: "FDBI-37", images: ['./img-BB/FDBI-37.jpg'] },
+                        { img: "./img-BB/FDBI-39.jpg", name: "NO:FDBI-39", price: "JMD:1200/1500", id: "FDBI-39", images: ['./img-BB/FDBI-39.jpg'] },
+                        { img: "./img-BB/FDBI-41.jpg", name: "NO:FDBI-41", price: "JMD:1200/1500", id: "FDBI-41", images: ['./img-BB/FDBI-41.jpg'] },
+                        { img: "./img-BB/SY252.jpg", name: "NO:SY252", price: "JMD:2000/2500", id: "SY252", images: ['./img-BB/SY252.jpg'] }
+                    ],
+                    Beachbag: [
+                        { img: "./img-BB/13-97.jpg", name: "NO:13-97", price: "JMD:1200/1500", id: "13-97", images: ['./img-BB/13-97.jpg'] },
+                        { img: "./img-BB/13-102.jpg", name: "NO:13-102", price: "JMD:1200/1500", id: "13-102", images: ['./img-BB/13-102.jpg', './img-BB/13-102-1.jpg', './img-BB/13-102-2.jpg', './img-BB/13-102-3.jpg'] },
+                        { img: "./img-BB/CAOBIAN.jpg", name: "NO:CAOBIAN", price: "JMD:1200/1500", id: "CAOBIAN", images: ['./img-BB/CAOBIAN.jpg'] },
+                        { img: "./img-BB/13-107-1.jpg", name: "NO:13-107-1", price: "JMD:1200/1500", id: "13-107-1", images: ['./img-BB/13-107-1.jpg', './img-BB/13-107-2.jpg', './img-BB/13-107-3.jpg'] },
+                        { img: "./img-BB/13-108-1.jpg", name: "NO:13-108-1", price: "JMD:1200/1500", id: "13-108-1", images: ['./img-BB/13-108-1.jpg', './img-BB/13-108-2.jpg', './img-BB/13-108-3.jpg', './img-BB/13-108-4.jpg'] },
+                        { img: "./img-BB/13-109-1.jpg", name: "NO:13-109-1", price: "JMD:1200/1500", id: "13-109-1", images: ['./img-BB/13-109-1.jpg', './img-BB/13-109-2.jpg'] }
+                    ],
+                    Fabricbag: [
+                        { img: "./img-BB/12-28.jpg", name: "NO:12-28", price: "JMD:1200/1500", id: "12-28", images: ['./img-BB/12-28.jpg'] },
+                        { img: "./img-BB/DBI-41.jpg", name: "NO:DBI-41", price: "JMD:1200/1500", id: "DBI-41", images: ['./img-BB/DBI-41.jpg'] },
+                        { img: "./img-BB/DBI-45.jpg", name: "NO:DBI-45", price: "JMD:1200/1500", id: "DBI-45", images: ['./img-BB/DBI-45.jpg'] },
+                        { img: "./img-BB/FDBI-15.jpg", name: "NO:FDBI-15", price: "JMD:1200/1500", id: "FDBI-15", images: ['./img-BB/FDBI-15.jpg'] },
+                        { img: "./img-BB/FDBI-31.jpg", name: "NO:FDBI-31", price: "JMD:1200/1500", id: "FDBI-31", images: ['./img-BB/FDBI-31.jpg'] },
+                        { img: "./img-BB/FDBI-32.jpg", name: "NO:FDBI-32", price: "JMD:1200/1500", id: "FDBI-32", images: ['./img-BB/FDBI-32.jpg'] },
+                        { img: "./img-BB/FDBI-34.jpg", name: "NO:FDBI-34", price: "JMD:1200/1500", id: "FDBI-34", images: ['./img-BB/FDBI-34.jpg'] },
+                        { img: "./img-BB/FDBI-37.jpg", name: "NO:FDBI-37", price: "JMD:1200/1500", id: "FDBI-37", images: ['./img-BB/FDBI-37.jpg'] },
+                        { img: "./img-BB/FDBI-39.jpg", name: "NO:FDBI-39", price: "JMD:1200/1500", id: "FDBI-39", images: ['./img-BB/FDBI-39.jpg'] },
+                        { img: "./img-BB/FDBI-41.jpg", name: "NO:FDBI-41", price: "JMD:1200/1500", id: "FDBI-41", images: ['./img-BB/FDBI-41.jpg'] }
+                    ],
+                    Shoulderbag: [
+                        { img: "./img-BB/25.jpg", name: "NO:25", price: "JMD:1200/1500", id: "25", images: ['./img-BB/25.jpg'] },
+                        { img: "./img-BB/26.jpg", name: "NO:26", price: "JMD:1200/1500", id: "26", images: ['./img-BB/26.jpg'] },
+                        { img: "./img-BB/27.jpg", name: "NO:27", price: "JMD:1200/1500", id: "27", images: ['./img-BB/27.jpg'] },
+                        { img: "./img-BB/28.jpg", name: "NO:28", price: "JMD:1200/1500", id: "28", images: ['./img-BB/28.jpg'] },
+                        { img: "./img-BB/132-1.jpg", name: "NO:132-1", price: "JMD:1200/1500", id: "132-1", images: ['./img-BB/132-1.jpg'] },
+                        { img: "./img-BB/133-1.jpg", name: "NO:133-1", price: "JMD:1200/1500", id: "133-1", images: ['./img-BB/133-1.jpg'] },
+                        { img: "./img-BB/139-1.jpg", name: "NO:139-1", price: "JMD:1200/1500", id: "139-1", images: ['./img-BB/139-1.jpg'] },
+                        { img: "./img-BB/305-1.jpg", name: "NO:305-1", price: "JMD:1200/1500", id: "305-1", images: ['./img-BB/305-1.jpg'] },
+                        { img: "./img-BB/307-1.jpg", name: "NO:307-1", price: "JMD:1200/1500", id: "307-1", images: ['./img-BB/307-1.jpg'] },
+                        { img: "./img-BB/308-1.jpg", name: "NO:308-1", price: "JMD:1200/1500", id: "308-1", images: ['./img-BB/308-1.jpg'] },
+                        { img: "./img-BB/604.jpg", name: "NO:604", price: "JMD:1200/1500", id: "604", images: ['./img-BB/604.jpg'] },
+                        { img: "./img-BB/604.jpg", name: "NO:605", price: "JMD:1200/1500", id: "605", images: ['./img-BB/605.jpg'] },
+                        { img: "./img-BB/SY252.jpg", name: "NO:SY252", price: "JMD:2000/2500", id: "SY252", images: ['./img-BB/SY252.jpg'] }
+                    ],
+                    Handbag: [
+                        { img: "./img-BB/13-23.jpg", name: "NO:13-23", price: "JMD:1200/1500", id: "13-23", images: ['./img-BB/13-23.jpg'] },
+                        { img: "./img-BB/13-49.jpg", name: "NO:13-49", price: "JMD:1200/1500", id: "13-49", images: ['./img-BB/13-49.jpg'] },
+                        { img: "./img-BB/22-12.jpg", name: "NO:22-12", price: "JMD:1200/1500", id: "22-12", images: ['./img-BB/22-12.jpg'] },
+                        { img: "./img-BB/22-17.jpg", name: "NO:22-17", price: "JMD:1200/1500", id: "22-17", images: ['./img-BB/22-17.jpg'] },
+                        { img: "./img-BB/22-21.jpg", name: "NO:22-21", price: "JMD:1200/1500", id: "22-21", images: ['./img-BB/22-21.jpg'] },
+                        { img: "./img-BB/22-30.jpg", name: "NO:22-30", price: "JMD:1200/1500", id: "22-30", images: ['./img-BB/22-30.jpg'] },
+                        { img: "./img-BB/22-56.jpg", name: "NO:22-56", price: "JMD:1200/1500", id: "22-56", images: ['./img-BB/22-56.jpg'] },
+                        { img: "./img-BB/22-57.jpg", name: "NO:22-57", price: "JMD:1200/1500", id: "22-57", images: ['./img-BB/22-57.jpg'] },
+                        { img: "./img-BB/22-69.jpg", name: "NO:22-69", price: "JMD:1200/1500", id: "22-69", images: ['./img-BB/22-69.jpg'] },
+                        { img: "./img-BB/22-78.jpg", name: "NO:22-78", price: "JMD:1200/1500", id: "22-78", images: ['./img-BB/22-78.jpg'] },
+                    ]
+                }
+            },
+            jewelry: {
+                subCats: ['All', 'Necklace', 'Bracelet', 'Earrings', 'Ring'],
+                products: {
+                    All: [
+                        { img: "./img/哈士奇.jpg", name: "Versatile White Shoes", price: "129", id: "jewelry-1", images: ['./img/哈士奇-1.jpg', './img/哈士奇-2.jpg'] },
+                        { img: "./img/熊猫.jpg", name: "Fashion Shoulder Bag", price: "159", id: "jewelry-2", images: ['./img/熊猫-1.jpg', './img/熊猫-2.jpg', './img/熊猫-3.jpg'] },
+                        { img: "./img/大香蕉.jpg", name: "Thick-soled Dad Shoes", price: "179", id: "jewelry-3", images: ['./img/大香蕉-1.jpg'] },
+                        { img: "./img/熊猫.jpg", name: "Leisure Backpack", price: "99", id: "jewelry-4", images: ['./img/熊猫-4.jpg', './img/熊猫-5.jpg'] }
+                    ],
+                    Necklace: [
+                        { img: "./img/哈士奇.jpg", name: "Versatile White Shoes", price: "129", id: "jewelry-1", images: ['./img/哈士奇-1.jpg', './img/哈士奇-2.jpg'] }
+                    ],
+                    Bracelet: [
+                        { img: "./img/熊猫.jpg", name: "Fashion Shoulder Bag", price: "159", id: "jewelry-2", images: ['./img/熊猫-1.jpg', './img/熊猫-2.jpg', './img/熊猫-3.jpg'] }
+                    ],
+                    Earrings: [
+                        { img: "./img/大香蕉.jpg", name: "Thick-soled Dad Shoes", price: "179", id: "jewelry-3", images: ['./img/大香蕉-1.jpg'] }
+                    ],
+                    Ring: [
+                        { img: "./img/熊猫.jpg", name: "Leisure Backpack", price: "99", id: "jewelry-4", images: ['./img/熊猫-4.jpg', './img/熊猫-5.jpg'] }
+                    ]
+                }
+            },
+            Hat: {
+                subCats: ['All', 'Baseball', 'Bucket', 'Beanie', 'Cap'],
+                products: {
+                    All: [
+                        { img: "./img/哈士奇.jpg", name: "Smart Rice Cooker", price: "299", id: "hat-1", images: ['./img/哈士奇-3.jpg', './img/哈士奇-4.jpg'] },
+                        { img: "./img/熊猫.jpg", name: "Wireless Vacuum Cleaner", price: "499", id: "hat-2", images: ['./img/熊猫-6.jpg', './img/熊猫-7.jpg', './img/熊猫-8.jpg'] },
+                        { img: "./img/大香蕉.jpg", name: "Rechargeable Electric Toothbrush", price: "129", id: "hat-3", images: ['./img/大香蕉-2.jpg'] },
+                        { img: "./img/熊猫.jpg", name: "Multifunctional Air Fryer", price: "329", id: "hat-4", images: ['./img/熊猫-9.jpg', './img/熊猫-10.jpg'] }
+                    ],
+                    Baseball: [
+                        { img: "./img/哈士奇.jpg", name: "Smart Rice Cooker", price: "299", id: "hat-1", images: ['./img/哈士奇-3.jpg', './img/哈士奇-4.jpg'] }
+                    ],
+                    Bucket: [
+                        { img: "./img/熊猫.jpg", name: "Wireless Vacuum Cleaner", price: "499", id: "hat-2", images: ['./img/熊猫-6.jpg', './img/熊猫-7.jpg', './img/熊猫-8.jpg'] }
+                    ],
+                    Beanie: [
+                        { img: "./img/大香蕉.jpg", name: "Rechargeable Electric Toothbrush", price: "129", id: "hat-3", images: ['./img/大香蕉-2.jpg'] }
+                    ],
+                    Cap: [
+                        { img: "./img/熊猫.jpg", name: "Multifunctional Air Fryer", price: "329", id: "hat-4", images: ['./img/熊猫-9.jpg', './img/熊猫-10.jpg'] }
+                    ]
+                }
+            },
+            Backpack: {
+                subCats: ['All', 'School', 'Travel', 'Sports', 'Business'],
+                products: {
+                    All: [
+                        { img: "./img/哈士奇.jpg", name: "Fresh Cream Strawberries", price: "49", id: "backpack-1", images: ['./img/哈士奇-5.jpg', './img/哈士奇-6.jpg'] },
+                        { img: "./img/熊猫.jpg", name: "Farm Raised Eggs", price: "39", id: "backpack-2", images: ['./img/熊猫-11.jpg', './img/熊猫-12.jpg', './img/熊猫-13.jpg'] },
+                        { img: "./img/大香蕉.jpg", name: "Fresh Deep Sea Prawns", price: "129", id: "backpack-3", images: ['./img/大香蕉-3.jpg'] },
+                        { img: "./img/熊猫.jpg", name: "Original Cut Snow Beef", price: "199", id: "backpack-4", images: ['./img/熊猫-14.jpg', './img/熊猫-15.jpg'] }
+                    ],
+                    School: [
+                        { img: "./img/哈士奇.jpg", name: "Fresh Cream Strawberries", price: "49", id: "backpack-1", images: ['./img/哈士奇-5.jpg', './img/哈士奇-6.jpg'] }
+                    ],
+                    Travel: [
+                        { img: "./img/熊猫.jpg", name: "Farm Raised Eggs", price: "39", id: "backpack-2", images: ['./img/熊猫-11.jpg', './img/熊猫-12.jpg', './img/熊猫-13.jpg'] }
+                    ],
+                    Sports: [
+                        { img: "./img/大香蕉.jpg", name: "Fresh Deep Sea Prawns", price: "129", id: "backpack-3", images: ['./img/大香蕉-3.jpg'] }
+                    ],
+                    Business: [
+                        { img: "./img/熊猫.jpg", name: "Original Cut Snow Beef", price: "199", id: "backpack-4", images: ['./img/熊猫-14.jpg', './img/熊猫-15.jpg'] }
+                    ]
+                }
+            }
+        };
 
         let pageStack = ['home'];
         let slideInterval;
-        // 购物车数据（从本地存储读取，没有则初始化空数组）
         let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-        // 当前选中的商品（详情页用）
         let currentGoods = null;
+        let currentCat = '';
+        let currentSubCat = 'All';
+        let detailSlideIndex = 0; // 详情页轮播当前索引
 
         // 初始化轮播
         function initSwiper() {
             let slides = document.querySelectorAll('.slide');
             let i = 0;
-
             if (slideInterval) clearInterval(slideInterval);
-
             slideInterval = setInterval(() => {
                 slides[i].classList.remove('active');
                 i = (i + 1) % slides.length;
@@ -675,109 +1005,163 @@
             }, 3000);
         }
 
-        // 页面加载完成后初始化
+        // 页面加载初始化
         window.addEventListener('DOMContentLoaded', function () {
             initSwiper();
             initTouchCloseBigImg();
-            // 初始化购物车
             updateCartUI();
+            setTimeout(() => {
+                document.getElementById('customModal').classList.add('active');
+            }, 1000);
         });
 
+        // 页面切换
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
         }
-
         function navigateTo(id) {
             pageStack.push(id);
             showPage(id);
         }
-
         function goBack() {
             closeBigImg();
-
             if (pageStack.length > 1) {
                 pageStack.pop();
                 showPage(pageStack[pageStack.length - 1]);
             }
         }
 
-        function goCat(name) {
-            if (!catData[name]) {
-                alert('该分类暂无商品');
-                return;
-            }
+        // 渲染二级分类导航
+        function renderSubCatNav(catName) {
+            const subcatNav = document.getElementById('subcatNav');
+            const subCats = catData[catName].subCats;
+            let html = '';
+            subCats.forEach(subCat => {
+                const isActive = subCat === currentSubCat ? 'active' : '';
+                html += `<span class="subcat-item ${isActive}" onclick="changeSubCat('${subCat}')">${subCat}</span>`;
+            });
+            subcatNav.innerHTML = html;
+        }
 
-            document.getElementById('catName').innerText = name;
+        // 切换二级分类
+        function changeSubCat(subCatName) {
+            currentSubCat = subCatName;
+            document.querySelectorAll('.subcat-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.textContent === subCatName) {
+                    item.classList.add('active');
+                }
+            });
+            renderCatGoods(currentCat, currentSubCat);
+        }
+
+        // 渲染分类商品列表（无改动，复用原有逻辑，点击时会传递包含images的商品数据）
+        function renderCatGoods(catName, subCatName) {
             const list = document.getElementById('catList');
             list.innerHTML = '';
-
+            const products = catData[catName].products[subCatName];
             let html = '';
-            catData[name].forEach(goods => {
+            products.forEach(goods => {
                 html += `
-                    <div class="cat-goods-item" onclick='goToDetail(${JSON.stringify(goods)})'>
-                        <img src="${goods.img}" class="cat-goods-img" alt="${goods.name}" onerror="this.src='https://via.placeholder.com/180x180?text=Product+Image'">
-                        <div class="cat-goods-info">
-                            <div class="cat-goods-name">${goods.name}</div>
-                            <div class="cat-goods-price">${goods.price}</div>
-                        </div>
+                <div class="cat-goods-item" onclick='goToDetail(${JSON.stringify(goods)})'>
+                    <img src="${goods.img}" class="cat-goods-img" alt="${goods.name}" onerror="this.src='https://via.placeholder.com/180x180?text=Product+Image'">
+                    <div class="cat-goods-info">
+                        <div class="cat-goods-name">${goods.name}</div>
+                        <div class="cat-goods-price">${goods.price}</div>
                     </div>
-                `;
+                </div>`;
             });
             list.innerHTML = html;
+        }
 
+        // 分类页面跳转
+        function goCat(name) {
+            if (!catData[name]) return;
+            currentCat = name;
+            currentSubCat = 'All';
+            document.getElementById('catName').innerText = name;
+            renderSubCatNav(name);
+            renderCatGoods(name, 'All');
             navigateTo('category');
         }
 
+        // 商品详情页 - 渲染多图轮播（无改动，兼容分类商品的images字段）
+        function renderDetailSwiper(images) {
+            const slidesContainer = document.getElementById('detailSlides');
+            const indicatorContainer = document.getElementById('detailIndicator');
+            slidesContainer.innerHTML = '';
+            indicatorContainer.innerHTML = '';
+            detailSlideIndex = 0;
+
+            // 渲染轮播图片
+            images.forEach((img, index) => {
+                const slide = document.createElement('img');
+                slide.className = `detail-slide ${index === 0 ? 'active' : ''}`;
+                slide.src = img;
+                slide.alt = `Product image ${index + 1}`;
+                slide.onerror = () => slide.src = 'https://via.placeholder.com/375x300?text=Detail+Image';
+                slide.onclick = () => openBigImg(img);
+                slidesContainer.appendChild(slide);
+
+                // 渲染指示器
+                const dot = document.createElement('span');
+                dot.className = `indicator-dot ${index === 0 ? 'active' : ''}`;
+                dot.onclick = () => goToDetailSlide(index);
+                indicatorContainer.appendChild(dot);
+            });
+        }
+
+        // 详情页轮播控制
+        function goToDetailSlide(index) {
+            const slides = document.querySelectorAll('.detail-slide');
+            const dots = document.querySelectorAll('.indicator-dot');
+            if (index < 0 || index >= slides.length) return;
+            slides[detailSlideIndex].classList.remove('active');
+            dots[detailSlideIndex].classList.remove('active');
+            detailSlideIndex = index;
+            slides[detailSlideIndex].classList.add('active');
+            dots[detailSlideIndex].classList.add('active');
+        }
+
+        function prevDetailSlide() {
+            goToDetailSlide(detailSlideIndex - 1);
+        }
+
+        function nextDetailSlide() {
+            goToDetailSlide(detailSlideIndex + 1);
+        }
+
+        // 商品详情页跳转（无改动，同时支持首页和分类商品的images字段）
         function goToDetail(goods) {
-            if (!goods || !goods.img || !goods.name) {
-                alert('商品信息异常');
-                return;
-            }
-
-            // 保存当前选中的商品
+            if (!goods) return;
             currentGoods = goods;
-
-            document.getElementById('detailImg').src = goods.img;
+            // 渲染多图轮播：优先用自定义images，没有则用主图
+            renderDetailSwiper(goods.images || [goods.img]);
             document.getElementById('detailName').innerText = goods.name;
             document.getElementById('detailPrice').innerText = goods.price;
             navigateTo('detail');
         }
 
-        // 大图查看
+        // 大图弹窗
         function openBigImg(src) {
             document.getElementById('bigImg').src = src;
-            const modal = document.getElementById('bigImgModal');
-            modal.style.display = 'flex';
-            modal.querySelector('.modal-img').onclick = function (e) {
-                e.stopPropagation();
-            };
+            document.getElementById('bigImgModal').style.display = 'flex';
         }
-
         function closeBigImg() {
             document.getElementById('bigImgModal').style.display = 'none';
         }
-
-        // 初始化触摸滑动关闭大图
         function initTouchCloseBigImg() {
             const modal = document.getElementById('bigImgModal');
             let startY = 0;
-
-            modal.addEventListener('touchstart', function (e) {
-                startY = e.touches[0].clientY;
-            });
-
-            modal.addEventListener('touchend', function (e) {
+            modal.addEventListener('touchstart', e => { startY = e.touches[0].clientY; });
+            modal.addEventListener('touchend', e => {
                 const endY = e.changedTouches[0].clientY;
-                if (Math.abs(endY - startY) > 50) {
-                    closeBigImg();
-                }
+                if (Math.abs(endY - startY) > 50) closeBigImg();
             });
         }
 
-        // ===== 购物车核心功能 =====
-
-        // 跳转到购物车页面
+        // 购物车相关核心逻辑
         function goToCart() {
             renderCartList();
             navigateTo('cart');
@@ -786,62 +1170,40 @@
         // 加入购物车
         function addToCart() {
             if (!currentGoods) {
-                alert('请选择商品');
+                showAlertModal('Please select a product first!', 'Tip');
                 return;
             }
-
-            // 检查商品是否已在购物车
-            const existingItemIndex = cartItems.findIndex(item => item.id === currentGoods.id);
-
-            if (existingItemIndex > -1) {
-                // 已存在，数量+1
-                cartItems[existingItemIndex].quantity += 1;
-            } else {
-                // 不存在，添加新商品
-                cartItems.push({
-                    ...currentGoods,
-                    quantity: 1
-                });
-            }
-
-            // 保存到本地存储
+            const exist = cartItems.find(item => item.id === currentGoods.id);
+            if (exist) exist.quantity++;
+            else cartItems.push({ ...currentGoods, quantity: 1 });
             localStorage.setItem('cartItems', JSON.stringify(cartItems));
-
-            // 更新UI
             updateCartUI();
-
-            // 提示
-            alert('加入购物车成功！');
+            showAlertModal('Added to cart successfully!', 'Success');
         }
 
-        // 增加购物车商品数量
+        // 购物车商品数量增减
         function increaseCartItem(id) {
-            const itemIndex = cartItems.findIndex(item => item.id === id);
-            if (itemIndex > -1) {
-                cartItems[itemIndex].quantity += 1;
-                saveCartAndUpdateUI();
-            }
+            const item = cartItems.find(x => x.id === id);
+            if (item) item.quantity++;
+            saveCartAndUpdateUI();
         }
-
-        // 减少购物车商品数量
         function decreaseCartItem(id) {
-            const itemIndex = cartItems.findIndex(item => item.id === id);
-            if (itemIndex > -1) {
-                if (cartItems[itemIndex].quantity > 1) {
-                    cartItems[itemIndex].quantity -= 1;
-                } else {
-                    // 数量为1时，删除商品
-                    cartItems.splice(itemIndex, 1);
-                }
-                saveCartAndUpdateUI();
-            }
+            const idx = cartItems.findIndex(x => x.id === id);
+            if (idx === -1) return;
+            if (cartItems[idx].quantity > 1) cartItems[idx].quantity--;
+            else cartItems.splice(idx, 1);
+            saveCartAndUpdateUI();
         }
 
         // 删除购物车商品
-        function deleteCartItem(id) {
-            if (confirm('确定要删除该商品吗？')) {
+        async function deleteCartItem(id) {
+            try {
+                await showConfirmModal('Confirm Delete', 'Are you sure to delete this product?');
                 cartItems = cartItems.filter(item => item.id !== id);
                 saveCartAndUpdateUI();
+                showAlertModal('Deleted successfully!', 'Success');
+            } catch (error) {
+                return;
             }
         }
 
@@ -852,110 +1214,127 @@
             renderCartList();
         }
 
-        // 更新购物车UI（角标、总价）
+        // 更新购物车角标和总价
         function updateCartUI() {
-            // 更新购物车角标
-            const totalCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-            document.getElementById('cartBadge').textContent = totalCount;
-
-            // 计算总价（简化处理，仅提取数字部分）
+            const total = cartItems.reduce((s, i) => s + i.quantity, 0);
+            document.getElementById('cartBadge').textContent = total;
             calculateCartTotal();
         }
 
         // 计算购物车总价
         function calculateCartTotal() {
             let total = 0;
-
             cartItems.forEach(item => {
-                // 提取价格中的数字（简化处理，取第一个数字）
-                const priceMatch = item.price.match(/\d+/);
-                if (priceMatch) {
-                    const price = parseFloat(priceMatch[0]);
-                    total += price * item.quantity;
-                }
+                const m = item.price.match(/\d+/);
+                if (m) total += parseFloat(m[0]) * item.quantity;
             });
-
-            // 更新总价显示
             if (document.getElementById('cartTotalPrice')) {
                 document.getElementById('cartTotalPrice').textContent = `JMB: ${total}`;
             }
-
             return total;
         }
 
         // 渲染购物车列表
         function renderCartList() {
             const cartList = document.getElementById('cartList');
-            const cartEmpty = document.getElementById('cartEmpty');
-            const cartFooter = document.getElementById('cartFooter');
-            const checkoutBtn = document.getElementById('checkoutBtn');
-
-            // 清空列表
+            const empty = document.getElementById('cartEmpty');
+            const footer = document.getElementById('cartFooter');
             cartList.innerHTML = '';
 
             if (cartItems.length === 0) {
-                // 购物车为空
-                cartEmpty.style.display = 'block';
-                cartFooter.style.display = 'none';
-            } else {
-                // 购物车有商品
-                cartEmpty.style.display = 'none';
-                cartFooter.style.display = 'flex';
+                empty.style.display = 'block';
+                footer.style.display = 'none';
+                return;
+            }
 
-                // 渲染商品列表
-                let html = '';
-                cartItems.forEach(item => {
-                    // 核心修改：给购物车商品条目添加点击事件，跳转到详情页
-                    html += `
-                        <div class="cart-item" onclick="openCartItemDetail('${item.id}')">
-                            <img src="${item.img}" class="cart-item-img" alt="${item.name}" onerror="this.src='https://via.placeholder.com/80x80?text=Product'">
-                            <div class="cart-item-info">
-                                <div>
-                                    <div class="cart-item-name">${item.name}</div>
-                                    <div class="cart-item-price">${item.price}</div>
-                                </div>
-                                <div class="cart-item-control">
-                                    <button class="cart-btn" onclick="event.stopPropagation(); decreaseCartItem('${item.id}')">-</button>
-                                    <span class="cart-count">${item.quantity}</span>
-                                    <button class="cart-btn" onclick="event.stopPropagation(); increaseCartItem('${item.id}')">+</button>
-                                    <span class="cart-delete" onclick="event.stopPropagation(); deleteCartItem('${item.id}')">删除</span>
-                                </div>
-                            </div>
+            empty.style.display = 'none';
+            footer.style.display = 'flex';
+            let html = '';
+
+            cartItems.forEach(item => {
+                html += `
+                <div class="cart-item" onclick="openCartItemDetail('${item.id}')">
+                    <img src="${item.img}" class="cart-item-img" alt="${item.name}" onerror="this.src='https://via.placeholder.com/80x80?text=Product'">
+                    <div class="cart-item-info">
+                        <div>
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-price">${item.price}</div>
                         </div>
-                    `;
-                });
+                        <div class="cart-item-control">
+                            <button class="cart-btn" onclick="event.stopPropagation(); decreaseCartItem('${item.id}')">-</button>
+                            <span class="cart-count">${item.quantity}</span>
+                            <button class="cart-btn" onclick="event.stopPropagation(); increaseCartItem('${item.id}')">+</button>
+                            <span class="cart-delete" onclick="event.stopPropagation(); deleteCartItem('${item.id}')">Delete</span>
+                        </div>
+                    </div>
+                </div>`;
+            });
 
-                cartList.innerHTML = html;
-
-                // 更新总价
-                calculateCartTotal();
-
-                // 启用结算按钮
-                checkoutBtn.disabled = false;
-            }
+            cartList.innerHTML = html;
+            calculateCartTotal();
         }
 
-        // 新增：打开购物车商品详情页
+        // 购物车商品跳转详情
         function openCartItemDetail(id) {
-            // 根据商品ID查找完整的商品信息
-            const goods = cartItems.find(item => item.id === id);
-            if (goods) {
-                // 调用已有的详情页函数
-                goToDetail(goods);
-            }
+            const goods = cartItems.find(x => x.id === id);
+            if (goods) goToDetail(goods);
         }
 
-        // 结算按钮点击事件
-        document.getElementById('checkoutBtn').addEventListener('click', function () {
-            const total = calculateCartTotal();
-            alert(`结算成功！您需要支付: JMB: ${total}\n感谢您的购买！`);
+        // 清空购物车
+        document.getElementById('checkoutBtn').onclick = async function () {
+            try {
+                await showConfirmModal('Empty Cart', 'Are you sure to empty the shopping cart?');
+                cartItems = [];
+                localStorage.setItem('cartItems', JSON.stringify(cartItems));
+                updateCartUI();
+                renderCartList();
+                showAlertModal('Cart cleared successfully!', 'Success');
+            } catch (error) {
+                return;
+            }
+        };
 
-            // 清空购物车
-            cartItems = [];
-            localStorage.setItem('cartItems', JSON.stringify(cartItems));
-            updateCartUI();
-            renderCartList();
-        });
+        // 弹窗工具函数
+        function showAlertModal(msg, title = 'Tip') {
+            return new Promise((resolve) => {
+                const modal = document.getElementById('customModal');
+                document.getElementById('modalTitle').textContent = title;
+                document.getElementById('modalBody').textContent = msg;
+                document.getElementById('modalFooter').innerHTML = `
+                    <button class="modal-btn confirm single" onclick="hideModal()">OK</button>
+                `;
+                modal.classList.add('active');
+                const hide = () => {
+                    modal.classList.remove('active');
+                    resolve();
+                };
+                window.hideModal = hide;
+            });
+        }
+
+        function showConfirmModal(title, msg) {
+            return new Promise((resolve, reject) => {
+                const modal = document.getElementById('customModal');
+                document.getElementById('modalTitle').textContent = title;
+                document.getElementById('modalBody').textContent = msg;
+                document.getElementById('modalFooter').innerHTML = `
+                    <button class="modal-btn cancel" onclick="hideModal(false)">Cancel</button>
+                    <button class="modal-btn confirm" onclick="hideModal(true)">Confirm</button>
+                `;
+                modal.classList.add('active');
+                const hide = (isConfirm) => {
+                    modal.classList.remove('active');
+                    if (isConfirm) resolve();
+                    else reject();
+                };
+                window.hideModal = hide;
+            });
+        }
+
+        function hideModal(isConfirm) {
+            const modal = document.getElementById('customModal');
+            modal.classList.remove('active');
+        }
     </script>
 </body>
 

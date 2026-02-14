@@ -592,6 +592,20 @@
                 opacity: 1;
             }
         }
+
+        /* 批发价展示补充样式 */
+        .goods-price-detail,
+        .cat-goods-price-detail {
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        .cart-item-price-type {
+            font-size: 12px;
+            color: #666;
+            margin-top: 2px;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -646,7 +660,7 @@
             <div class="goods-item" onclick="goToDetail({
                 img:'./img/YF-647.jpg',
                 name:'NO:647',
-                price:'JMB:1000/1400',
+                price:{single: 1400, wholesale: 1000, threshold: 5},
                 id:'YF-647',
                 images:['./img/YF-647.jpg','./img/YF-651.jpg','./img/YF-661.jpg']
             })">
@@ -654,13 +668,14 @@
                     onerror="this.src='https://via.placeholder.com/180x180?text=Product+Image'">
                 <div class="goods-info">
                     <div class="goods-name">NO:647</div>
-                    <div class="goods-price">JMB:1000/1400</div>
+                    <div class="goods-price">JMB:1400</div>
+                    <div style="font-size:12px;color:#999;margin-top:4px;">Wholesale price:1000 (≥5件)</div>
                 </div>
             </div>
             <div class="goods-item" onclick="goToDetail({
                 img:'./img/YF-651.jpg',
                 name:'NO:651',
-                price:'JMB:1000/1400',
+                price:{single: 1400, wholesale: 1000, threshold: 5},
                 id:'YF-651',
                 images:['./img/YF-651.jpg','./img/YF-661.jpg','./img/YF-9636.jpg']
             })">
@@ -668,13 +683,14 @@
                     onerror="this.src='https://via.placeholder.com/180x180?text=Product+Image'">
                 <div class="goods-info">
                     <div class="goods-name">NO:651</div>
-                    <div class="goods-price">JMB:1000/1400</div>
+                    <div class="goods-price">JMB:1400</div>
+                    <div style="font-size:12px;color:#999;margin-top:4px;">Wholesale price:1000 (≥5件)</div>
                 </div>
             </div>
             <div class="goods-item" onclick="goToDetail({
                 img:'./img/YF-661.jpg',
                 name:'NO:661',
-                price:'JMB:1000/1400',
+                price:{single: 1400, wholesale: 1000, threshold: 5},
                 id:'YF-661',
                 images:['./img/YF-661.jpg','./img/YF-9636.jpg','./img/YF-MX073.jpg']
             })">
@@ -682,13 +698,14 @@
                     onerror="this.src='https://via.placeholder.com/180x180?text=Product+Image'">
                 <div class="goods-info">
                     <div class="goods-name">NO:661</div>
-                    <div class="goods-price">JMB:1000/1400</div>
+                    <div class="goods-price">JMB:1400</div>
+                    <div style="font-size:12px;color:#999;margin-top:4px;">Wholesale price:1000 (≥5件)</div>
                 </div>
             </div>
             <div class="goods-item" onclick="goToDetail({
                 img:'./img/YF-9636.jpg',
                 name:'NO:9636',
-                price:'JMB:1000/1400',
+                price:{single: 1400, wholesale: 1000, threshold: 5},
                 id:'YF-9636',
                 images:['./img/YF-9636.jpg','./img/YF-MX073.jpg','./img/YF-656.jpg']
             })">
@@ -696,13 +713,14 @@
                     onerror="this.src='https://via.placeholder.com/180x180?text=Product+Image'">
                 <div class="goods-info">
                     <div class="goods-name">NO:9636</div>
-                    <div class="goods-price">JMB:1000/1400</div>
+                    <div class="goods-price">JMB:1400</div>
+                    <div style="font-size:12px;color:#999;margin-top:4px;">Wholesale price:1000 (≥5件)</div>
                 </div>
             </div>
             <div class="goods-item" onclick="goToDetail({
                 img:'./img/YF-MX073.jpg',
                 name:'NO:MX073',
-                price:'JMB:1000/1400',
+                price:{single: 1400, wholesale: 1000, threshold: 5},
                 id:'YF-MX073',
                 images:['./img/YF-MX073.jpg','./img/YF-656.jpg','./img/YF-6033.jpg']
             })">
@@ -710,7 +728,8 @@
                     onerror="this.src='https://via.placeholder.com/180x180?text=Product+Image'">
                 <div class="goods-info">
                     <div class="goods-name">NO:MX073</div>
-                    <div class="goods-price">JMB:1000/1400</div>
+                    <div class="goods-price">JMB:1400</div>
+                    <div style="font-size:12px;color:#999;margin-top:4px;">Wholesale price:1000 (≥5件)</div>
                 </div>
             </div>
         </div>
@@ -740,7 +759,7 @@
         </div>
         <div class="detail-info">
             <div id="detailName" class="detail-name"></div>
-            <div id="detailPrice" class="detail-price"></div> <!-- 修复class名拼写错误 -->
+            <div id="detailPrice" class="detail-price"></div>
             <button class="add-cart-btn" onclick="addToCart()">Add to Cart</button>
         </div>
     </div>
@@ -780,207 +799,675 @@
     </div>
 
     <script>
-        // 重构数据结构：分类商品增加自定义images字段，支持指定多张详情图
+        // 重构数据结构：价格改为包含单价、批发价、批发阈值的对象
         const catData = {
             Clothing: {
-                subCats: ['All', 'Jacket', 'Shirt', 'Pants', 'Dress'],
+                subCats: ['All', 'Jacket'],
                 products: {
                     All: [
-                        { img: "./img/YF-647.jpg", name: "NO:647", price: "JMB:1000/1400", id: "YF-647", images: ['./img/YF-647-1.jpg', './img/YF-647-2.jpg', './img/YF-647-3.jpg'] }, // 自定义3张图
-                        { img: "./img/YF-651.jpg", name: "NO:651", price: "JMB:1000/1400", id: "YF-651", images: ['./img/YF-651-1.jpg', './img/YF-651-2.jpg'] }, // 自定义2张图
-                        { img: "./img/YF-661.jpg", name: "NO:661", price: "JMB:1000/1400", id: "YF-661", images: ['./img/YF-661-1.jpg', './img/YF-661-2.jpg', './img/YF-661-3.jpg', './img/YF-661-4.jpg'] }, // 自定义4张图
-                        { img: "./img/YF-9636.jpg", name: "NO:9636", price: "JMB:1000/1400", id: "YF-9636", images: ['./img/YF-9636-1.jpg'] }, // 自定义1张图
-                        { img: "./img/YF-MX073.jpg", name: "NO:MX073", price: "JMB:1000/1400", id: "YF-MX073", images: ['./img/YF-MX073-1.jpg', './img/YF-MX073-2.jpg'] },
-                        { img: "./img/YF-656.jpg", name: "NO:656", price: "JMB:1000/1400", id: "YF-656", images: ['./img/YF-656-1.jpg', './img/YF-656-2.jpg', './img/YF-656-3.jpg'] },
-                        { img: "./img/YF-6033.jpg", name: "NO:6033", price: "JMB:1100/1500", id: "YF-6033", images: ['./img/YF-6033-1.jpg'] },
-                        { img: "./img/YF-8021.jpg", name: "NO:8021", price: "JMB:1000/1400", id: "YF-8021", images: ['./img/YF-8021-1.jpg', './img/YF-8021-2.jpg'] },
-                        { img: "./img/YF-8026.jpg", name: "NO:8026", price: "JMB:1000/1400", id: "YF-8026", images: ['./img/YF-8026-1.jpg', './img/YF-8026-2.jpg', './img/YF-8026-3.jpg'] },
-                        { img: "./img/YF-9649.jpg", name: "NO:9649", price: "JMB:1000/1400", id: "YF-9649", images: ['./img/YF-9649-1.jpg', './img/YF-9649-2.jpg'] }
+                        {
+                            img: "./img/YF-9649.jpg",
+                            name: "NO:9649",
+                            price: { single: 1400, wholesale: 1000, threshold: 5 },
+                            id: "YF-9649",
+                            images: ['./img/YF-9649-1.jpg', './img/YF-9649-2.jpg']
+                        }
                     ],
                     Jacket: [
-                        { img: "./img/YF-647.jpg", name: "NO:647", price: "JMB:1000/1400", id: "YF-647", images: ['./img/YF-647-1.jpg', './img/YF-647-2.jpg', './img/YF-647-3.jpg'] },
-                        { img: "./img/YF-651.jpg", name: "NO:651", price: "JMB:1000/1400", id: "YF-651", images: ['./img/YF-651-1.jpg', './img/YF-651-2.jpg'] },
-                        { img: "./img/YF-661.jpg", name: "NO:661", price: "JMB:1000/1400", id: "YF-661", images: ['./img/YF-661-1.jpg', './img/YF-661-2.jpg', './img/YF-661-3.jpg', './img/YF-661-4.jpg'] }
+                        {
+                            img: "./img/YF-661.jpg",
+                            name: "NO:661",
+                            price: { single: 1400, wholesale: 1000, threshold: 5 },
+                            id: "YF-661",
+                            images: ['./img/YF-661-1.jpg', './img/YF-661-2.jpg', './img/YF-661-3.jpg', './img/YF-661-4.jpg']
+                        }
                     ],
-                    Shirt: [
-                        { img: "./img/YF-9636.jpg", name: "NO:9636", price: "JMB:1000/1400", id: "YF-9636", images: ['./img/YF-9636-1.jpg'] },
-                        { img: "./img/YF-MX073.jpg", name: "NO:MX073", price: "JMB:1000/1400", id: "YF-MX073", images: ['./img/YF-MX073-1.jpg', './img/YF-MX073-2.jpg'] }
-                    ],
-                    Pants: [
-                        { img: "./img/YF-656.jpg", name: "NO:656", price: "JMB:1000/1400", id: "YF-656", images: ['./img/YF-656-1.jpg', './img/YF-656-2.jpg', './img/YF-656-3.jpg'] },
-                        { img: "./img/YF-6033.jpg", name: "NO:6033", price: "JMB:1100/1500", id: "YF-6033", images: ['./img/YF-6033-1.jpg'] }
-                    ],
-                    Dress: [
-                        { img: "./img/YF-8021.jpg", name: "NO:8021", price: "JMB:1000/1400", id: "YF-8021", images: ['./img/YF-8021-1.jpg', './img/YF-8021-2.jpg'] },
-                        { img: "./img/YF-8026.jpg", name: "NO:8026", price: "JMB:1000/1400", id: "YF-8026", images: ['./img/YF-8026-1.jpg', './img/YF-8026-2.jpg', './img/YF-8026-3.jpg'] },
-                        { img: "./img/YF-9649.jpg", name: "NO:9649", price: "JMB:1000/1400", id: "YF-9649", images: ['./img/YF-9649-1.jpg', './img/YF-9649-2.jpg'] }
-                    ]
                 }
             },
             Bag: {
-                subCats: ['All', 'Beachbag', 'Fabricbag', 'Shoulderbag', 'Handbag'],
+                subCats: ['All', 'Handbag', 'Beachbag', 'Fabricbag', 'Shoulderbag'],
                 products: {
                     All: [
-                        { img: "./img-BB/12-28.jpg", name: "NO:12-28", price: "JMD:1200/1500", id: "12-28", images: ['./img-BB/12-28.jpg'] },
-                        { img: "./img-BB/13-23.jpg", name: "NO:13-23", price: "JMD:1200/1500", id: "13-23", images: ['./img-BB/13-23.jpg'] },
-                        { img: "./img-BB/13-49.jpg", name: "NO:13-49", price: "JMD:1200/1500", id: "13-49", images: ['./img-BB/13-49.jpg'] },
-                        { img: "./img-BB/13-97.jpg", name: "NO:13-97", price: "JMD:1200/1500", id: "13-97", images: ['./img-BB/13-97.jpg'] },
-                        { img: "./img-BB/13-102.jpg", name: "NO:13-102", price: "JMD:1200/1500", id: "13-102", images: ['./img-BB/13-102.jpg', './img-BB/13-102-1.jpg', './img-BB/13-102-2.jpg', './img-BB/13-102-3.jpg'] },
-                        { img: "./img-BB/13-107-1.jpg", name: "NO:13-107-1", price: "JMD:1200/1500", id: "13-107-1", images: ['./img-BB/13-107-1.jpg', './img-BB/13-107-2.jpg', './img-BB/13-107-3.jpg'] },
-                        { img: "./img-BB/13-108-1.jpg", name: "NO:13-108-1", price: "JMD:1200/1500", id: "13-108-1", images: ['./img-BB/13-108-1.jpg', './img-BB/13-108-2.jpg', './img-BB/13-108-3.jpg', './img-BB/13-108-4.jpg'] },
-                        { img: "./img-BB/13-109-1.jpg", name: "NO:13-109-1", price: "JMD:1200/1500", id: "13-109-1", images: ['./img-BB/13-109-1.jpg', './img-BB/13-109-2.jpg'] },
-                        { img: "./img-BB/17.jpg", name: "NO:17", price: "JMD:1200/1500", id: "17", images: ['./img-BB/17.jpg'] },
-                        { img: "./img-BB/18.jpg", name: "NO:18", price: "JMD:1200/1500", id: "18", images: ['./img-BB/18.jpg'] },
-                        { img: "./img-BB/22-12.jpg", name: "NO:22-12", price: "JMD:1200/1500", id: "22-12", images: ['./img-BB/22-12.jpg'] },
-                        { img: "./img-BB/22-17.jpg", name: "NO:22-17", price: "JMD:1200/1500", id: "22-17", images: ['./img-BB/22-17.jpg'] },
-                        { img: "./img-BB/22-21.jpg", name: "NO:22-21", price: "JMD:1200/1500", id: "22-21", images: ['./img-BB/22-21.jpg'] },
-                        { img: "./img-BB/22-30.jpg", name: "NO:22-30", price: "JMD:1200/1500", id: "22-30", images: ['./img-BB/22-30.jpg'] },
-                        { img: "./img-BB/22-56.jpg", name: "NO:22-56", price: "JMD:1200/1500", id: "22-56", images: ['./img-BB/22-56.jpg'] },
-                        { img: "./img-BB/22-57.jpg", name: "NO:22-57", price: "JMD:1200/1500", id: "22-57", images: ['./img-BB/22-57.jpg'] },
-                        { img: "./img-BB/22-69.jpg", name: "NO:22-69", price: "JMD:1200/1500", id: "22-69", images: ['./img-BB/22-69.jpg'] },
-                        { img: "./img-BB/22-78.jpg", name: "NO:22-78", price: "JMD:1200/1500", id: "22-78", images: ['./img-BB/22-78.jpg'] },
-                        { img: "./img-BB/25.jpg", name: "NO:25", price: "JMD:1200/1500", id: "25", images: ['./img-BB/25.jpg'] },
-                        { img: "./img-BB/26.jpg", name: "NO:26", price: "JMD:1200/1500", id: "26", images: ['./img-BB/26.jpg'] },
-                        { img: "./img-BB/27.jpg", name: "NO:27", price: "JMD:1200/1500", id: "27", images: ['./img-BB/27.jpg'] },
-                        { img: "./img-BB/28.jpg", name: "NO:28", price: "JMD:1200/1500", id: "28", images: ['./img-BB/28.jpg'] },
-                        { img: "./img-BB/132-1.jpg", name: "NO:132-1", price: "JMD:1200/1500", id: "132-1", images: ['./img-BB/132-1.jpg'] },
-                        { img: "./img-BB/133-1.jpg", name: "NO:133-1", price: "JMD:1200/1500", id: "133-1", images: ['./img-BB/133-1.jpg'] },
-                        { img: "./img-BB/139-1.jpg", name: "NO:139-1", price: "JMD:1200/1500", id: "139-1", images: ['./img-BB/139-1.jpg'] },
-                        { img: "./img-BB/305-1.jpg", name: "NO:305-1", price: "JMD:1200/1500", id: "305-1", images: ['./img-BB/305-1.jpg'] },
-                        { img: "./img-BB/307-1.jpg", name: "NO:307-1", price: "JMD:1200/1500", id: "307-1", images: ['./img-BB/307-1.jpg'] },
-                        { img: "./img-BB/308-1.jpg", name: "NO:308-1", price: "JMD:1200/1500", id: "308-1", images: ['./img-BB/308-1.jpg'] },
-                        { img: "./img-BB/604.jpg", name: "NO:604", price: "JMD:1200/1500", id: "604", images: ['./img-BB/604.jpg'] },
-                        { img: "./img-BB/604.jpg", name: "NO:605", price: "JMD:1200/1500", id: "605", images: ['./img-BB/605.jpg'] },
-                        { img: "./img-BB/C202-1.jpg", name: "NO:C202-1", price: "JMD:1200/1500", id: "C202-1", images: ['./img-BB/C202-1.jpg'] },
-                        { img: "./img-BB/C203-1.jpg", name: "NO:C203-1", price: "JMD:1200/1500", id: "C203-1", images: ['./img-BB/C203-1.jpg'] },
-                        { img: "./img-BB/CAOBIAN.jpg", name: "NO:CAOBIAN", price: "JMD:1200/1500", id: "CAOBIAN", images: ['./img-BB/CAOBIAN.jpg'] },
-                        { img: "./img-BB/DBI-41.jpg", name: "NO:DBI-41", price: "JMD:1200/1500", id: "DBI-41", images: ['./img-BB/DBI-41.jpg'] },
-                        { img: "./img-BB/DBI-45.jpg", name: "NO:DBI-45", price: "JMD:1200/1500", id: "DBI-45", images: ['./img-BB/DBI-45.jpg'] },
-                        { img: "./img-BB/FDBI-15.jpg", name: "NO:FDBI-15", price: "JMD:1200/1500", id: "FDBI-15", images: ['./img-BB/FDBI-15.jpg'] },
-                        { img: "./img-BB/FDBI-31.jpg", name: "NO:FDBI-31", price: "JMD:1200/1500", id: "FDBI-31", images: ['./img-BB/FDBI-31.jpg'] },
-                        { img: "./img-BB/FDBI-32.jpg", name: "NO:FDBI-32", price: "JMD:1200/1500", id: "FDBI-32", images: ['./img-BB/FDBI-32.jpg'] },
-                        { img: "./img-BB/FDBI-34.jpg", name: "NO:FDBI-34", price: "JMD:1200/1500", id: "FDBI-34", images: ['./img-BB/FDBI-34.jpg'] },
-                        { img: "./img-BB/FDBI-37.jpg", name: "NO:FDBI-37", price: "JMD:1200/1500", id: "FDBI-37", images: ['./img-BB/FDBI-37.jpg'] },
-                        { img: "./img-BB/FDBI-39.jpg", name: "NO:FDBI-39", price: "JMD:1200/1500", id: "FDBI-39", images: ['./img-BB/FDBI-39.jpg'] },
-                        { img: "./img-BB/FDBI-41.jpg", name: "NO:FDBI-41", price: "JMD:1200/1500", id: "FDBI-41", images: ['./img-BB/FDBI-41.jpg'] },
-                        { img: "./img-BB/SY252.jpg", name: "NO:SY252", price: "JMD:2000/2500", id: "SY252", images: ['./img-BB/SY252.jpg'] }
-                    ],
-                    Beachbag: [
-                        { img: "./img-BB/13-97.jpg", name: "NO:13-97", price: "JMD:1200/1500", id: "13-97", images: ['./img-BB/13-97.jpg'] },
-                        { img: "./img-BB/13-102.jpg", name: "NO:13-102", price: "JMD:1200/1500", id: "13-102", images: ['./img-BB/13-102.jpg', './img-BB/13-102-1.jpg', './img-BB/13-102-2.jpg', './img-BB/13-102-3.jpg'] },
-                        { img: "./img-BB/CAOBIAN.jpg", name: "NO:CAOBIAN", price: "JMD:1200/1500", id: "CAOBIAN", images: ['./img-BB/CAOBIAN.jpg'] },
-                        { img: "./img-BB/13-107-1.jpg", name: "NO:13-107-1", price: "JMD:1200/1500", id: "13-107-1", images: ['./img-BB/13-107-1.jpg', './img-BB/13-107-2.jpg', './img-BB/13-107-3.jpg'] },
-                        { img: "./img-BB/13-108-1.jpg", name: "NO:13-108-1", price: "JMD:1200/1500", id: "13-108-1", images: ['./img-BB/13-108-1.jpg', './img-BB/13-108-2.jpg', './img-BB/13-108-3.jpg', './img-BB/13-108-4.jpg'] },
-                        { img: "./img-BB/13-109-1.jpg", name: "NO:13-109-1", price: "JMD:1200/1500", id: "13-109-1", images: ['./img-BB/13-109-1.jpg', './img-BB/13-109-2.jpg'] }
-                    ],
-                    Fabricbag: [
-                        { img: "./img-BB/12-28.jpg", name: "NO:12-28", price: "JMD:1200/1500", id: "12-28", images: ['./img-BB/12-28.jpg'] },
-                        { img: "./img-BB/DBI-41.jpg", name: "NO:DBI-41", price: "JMD:1200/1500", id: "DBI-41", images: ['./img-BB/DBI-41.jpg'] },
-                        { img: "./img-BB/DBI-45.jpg", name: "NO:DBI-45", price: "JMD:1200/1500", id: "DBI-45", images: ['./img-BB/DBI-45.jpg'] },
-                        { img: "./img-BB/FDBI-15.jpg", name: "NO:FDBI-15", price: "JMD:1200/1500", id: "FDBI-15", images: ['./img-BB/FDBI-15.jpg'] },
-                        { img: "./img-BB/FDBI-31.jpg", name: "NO:FDBI-31", price: "JMD:1200/1500", id: "FDBI-31", images: ['./img-BB/FDBI-31.jpg'] },
-                        { img: "./img-BB/FDBI-32.jpg", name: "NO:FDBI-32", price: "JMD:1200/1500", id: "FDBI-32", images: ['./img-BB/FDBI-32.jpg'] },
-                        { img: "./img-BB/FDBI-34.jpg", name: "NO:FDBI-34", price: "JMD:1200/1500", id: "FDBI-34", images: ['./img-BB/FDBI-34.jpg'] },
-                        { img: "./img-BB/FDBI-37.jpg", name: "NO:FDBI-37", price: "JMD:1200/1500", id: "FDBI-37", images: ['./img-BB/FDBI-37.jpg'] },
-                        { img: "./img-BB/FDBI-39.jpg", name: "NO:FDBI-39", price: "JMD:1200/1500", id: "FDBI-39", images: ['./img-BB/FDBI-39.jpg'] },
-                        { img: "./img-BB/FDBI-41.jpg", name: "NO:FDBI-41", price: "JMD:1200/1500", id: "FDBI-41", images: ['./img-BB/FDBI-41.jpg'] }
-                    ],
-                    Shoulderbag: [
-                        { img: "./img-BB/25.jpg", name: "NO:25", price: "JMD:1200/1500", id: "25", images: ['./img-BB/25.jpg'] },
-                        { img: "./img-BB/26.jpg", name: "NO:26", price: "JMD:1200/1500", id: "26", images: ['./img-BB/26.jpg'] },
-                        { img: "./img-BB/27.jpg", name: "NO:27", price: "JMD:1200/1500", id: "27", images: ['./img-BB/27.jpg'] },
-                        { img: "./img-BB/28.jpg", name: "NO:28", price: "JMD:1200/1500", id: "28", images: ['./img-BB/28.jpg'] },
-                        { img: "./img-BB/132-1.jpg", name: "NO:132-1", price: "JMD:1200/1500", id: "132-1", images: ['./img-BB/132-1.jpg'] },
-                        { img: "./img-BB/133-1.jpg", name: "NO:133-1", price: "JMD:1200/1500", id: "133-1", images: ['./img-BB/133-1.jpg'] },
-                        { img: "./img-BB/139-1.jpg", name: "NO:139-1", price: "JMD:1200/1500", id: "139-1", images: ['./img-BB/139-1.jpg'] },
-                        { img: "./img-BB/305-1.jpg", name: "NO:305-1", price: "JMD:1200/1500", id: "305-1", images: ['./img-BB/305-1.jpg'] },
-                        { img: "./img-BB/307-1.jpg", name: "NO:307-1", price: "JMD:1200/1500", id: "307-1", images: ['./img-BB/307-1.jpg'] },
-                        { img: "./img-BB/308-1.jpg", name: "NO:308-1", price: "JMD:1200/1500", id: "308-1", images: ['./img-BB/308-1.jpg'] },
-                        { img: "./img-BB/604.jpg", name: "NO:604", price: "JMD:1200/1500", id: "604", images: ['./img-BB/604.jpg'] },
-                        { img: "./img-BB/604.jpg", name: "NO:605", price: "JMD:1200/1500", id: "605", images: ['./img-BB/605.jpg'] },
-                        { img: "./img-BB/SY252.jpg", name: "NO:SY252", price: "JMD:2000/2500", id: "SY252", images: ['./img-BB/SY252.jpg'] }
+                        {
+                            img: "./img-BB/SY252.jpg",
+                            name: "NO:SY252",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "SY252",
+                            images: ['./img-BB/SY252.jpg']
+                        },
+                        {
+                            img: "./img-BB/12-28.jpg",
+                            name: "NO:12-28",
+                            price: { single: 1200, wholesale: 900, threshold: 3 },
+                            id: "12-28",
+                            images: ['./img-BB/12-28.jpg']
+                        },
+                        {
+                            img: "./img-BB/13-23.jpg",
+                            name: "NO:13-23",
+                            price: { single: 1300, wholesale: 900, threshold: 3 },
+                            id: "13-23",
+                            images: ['./img-BB/13-23.jpg']
+                        },
+                        {
+                            img: "./img-BB/13-49.jpg",
+                            name: "NO:13-49",
+                            price: { single: 1500, wholesale: 1200, threshold: 3 },
+                            id: "13-49",
+                            images: ['./img-BB/13-49.jpg']
+                        },
+                        {
+                            img: "./img-BB/13-97.jpg",
+                            name: "NO:13-97",
+                            price: { single: 1000, wholesale: 800, threshold: 3 },
+                            id: "13-97",
+                            images: ['./img-BB/13-97.jpg']
+                        },
+                        {
+                            img: "./img-BB/13-102.jpg",
+                            name: "NO:13-102",
+                            price: { single: 1000, wholesale: 800, threshold: 3 },
+                            id: "13-102",
+                            images: ['./img-BB/13-102.jpg', './img-BB/13-102-1.jpg', './img-BB/13-102-2.jpg', './img-BB/13-102-3.jpg']
+                        },
+                        {
+                            img: "./img-BB/13-107-1.jpg",
+                            name: "NO:13-107-1",
+                            price: { single: 1000, wholesale: 800, threshold: 3 },
+                            id: "13-107-1",
+                            images: ['./img-BB/13-107-1.jpg', './img-BB/13-107-2.jpg', './img-BB/13-107-3.jpg']
+                        },
+                        {
+                            img: "./img-BB/13-108-1.jpg",
+                            name: "NO:13-108-1",
+                            price: { single: 1000, wholesale: 800, threshold: 3 },
+                            id: "13-108-1",
+                            images: ['./img-BB/13-108-1.jpg', './img-BB/13-108-2.jpg', './img-BB/13-108-3.jpg', './img-BB/13-108-4.jpg']
+                        },
+                        {
+                            img: "./img-BB/13-109-1.jpg",
+                            name: "NO:13-109-1",
+                            price: { single: 1000, wholesale: 800, threshold: 3 },
+                            id: "13-109-1",
+                            images: ['./img-BB/13-109-1.jpg', './img-BB/13-109-2.jpg']
+                        },
+                        {
+                            img: "./img-BB/17.jpg",
+                            name: "NO:17",
+                            price: { single: 1000, wholesale: 800, threshold: 3 },
+                            id: "17",
+                            images: ['./img-BB/17.jpg']
+                        },
+                        {
+                            img: "./img-BB/18.jpg",
+                            name: "NO:18",
+                            price: { single: 1000, wholesale: 800, threshold: 3 },
+                            id: "18",
+                            images: ['./img-BB/18.jpg']
+                        },
+                        {
+                            img: "./img-BB/22-12.jpg",
+                            name: "NO:22-12",
+                            price: { single: 1500, wholesale: 1200, threshold: 3 },
+                            id: "22-12",
+                            images: ['./img-BB/22-12.jpg']
+                        },
+                        {
+                            img: "./img-BB/22-17.jpg",
+                            name: "NO:22-17",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "22-17",
+                            images: ['./img-BB/22-17.jpg']
+                        },
+                        {
+                            img: "./img-BB/22-21.jpg",
+                            name: "NO:22-21",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "22-21",
+                            images: ['./img-BB/22-21.jpg']
+                        },
+                        {
+                            img: "./img-BB/22-30.jpg",
+                            name: "NO:22-30",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "22-30",
+                            images: ['./img-BB/22-30.jpg']
+                        },
+                        {
+                            img: "./img-BB/22-56.jpg",
+                            name: "NO:22-56",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "22-56",
+                            images: ['./img-BB/22-56.jpg']
+                        },
+                        {
+                            img: "./img-BB/22-57.jpg",
+                            name: "NO:22-57",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "22-57",
+                            images: ['./img-BB/22-57.jpg']
+                        },
+                        {
+                            img: "./img-BB/22-69.jpg",
+                            name: "NO:22-69",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "22-69",
+                            images: ['./img-BB/22-69.jpg']
+                        },
+                        {
+                            img: "./img-BB/22-78.jpg",
+                            name: "NO:22-78",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "22-78",
+                            images: ['./img-BB/22-78.jpg']
+                        },
+                        {
+                            img: "./img-BB/25.jpg",
+                            name: "NO:25",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "25",
+                            images: ['./img-BB/25.jpg']
+                        },
+                        {
+                            img: "./img-BB/26.jpg",
+                            name: "NO:26",
+                            price: { single: 1000, wholesale: 800, threshold: 3 },
+                            id: "26",
+                            images: ['./img-BB/26.jpg']
+                        },
+                        {
+                            img: "./img-BB/27.jpg",
+                            name: "NO:27",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "27",
+                            images: ['./img-BB/27.jpg']
+                        },
+                        {
+                            img: "./img-BB/28.jpg",
+                            name: "NO:28",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "28",
+                            images: ['./img-BB/28.jpg']
+                        },
+                        {
+                            img: "./img-BB/132-1.jpg",
+                            name: "NO:132-1",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "132-1",
+                            images: ['./img-BB/132-1.jpg']
+                        },
+                        {
+                            img: "./img-BB/133-1.jpg",
+                            name: "NO:133-1",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "133-1",
+                            images: ['./img-BB/133-1.jpg']
+                        },
+                        {
+                            img: "./img-BB/139-1.jpg",
+                            name: "NO:139-1",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "139-1",
+                            images: ['./img-BB/139-1.jpg']
+                        },
+                        {
+                            img: "./img-BB/305-1.jpg",
+                            name: "NO:305-1",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "305-1",
+                            images: ['./img-BB/305-1.jpg']
+                        },
+                        {
+                            img: "./img-BB/307-1.jpg",
+                            name: "NO:307-1",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "307-1",
+                            images: ['./img-BB/307-1.jpg']
+                        },
+                        {
+                            img: "./img-BB/308-1.jpg",
+                            name: "NO:308-1",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "308-1",
+                            images: ['./img-BB/308-1.jpg']
+                        },
+                        {
+                            img: "./img-BB/604.jpg",
+                            name: "NO:604",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "604",
+                            images: ['./img-BB/604.jpg']
+                        },
+                        {
+                            img: "./img-BB/604.jpg",
+                            name: "NO:605",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "605",
+                            images: ['./img-BB/605.jpg']
+                        },
+                        {
+                            img: "./img-BB/C202-1.jpg",
+                            name: "NO:C202-1",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "C202-1",
+                            images: ['./img-BB/C202-1.jpg']
+                        },
+                        {
+                            img: "./img-BB/C203-1.jpg",
+                            name: "NO:C203-1",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "C203-1",
+                            images: ['./img-BB/C203-1.jpg']
+                        },
+                        {
+                            img: "./img-BB/CAOBIAN.jpg",
+                            name: "NO:CAOBIAN",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "CAOBIAN",
+                            images: ['./img-BB/CAOBIAN.jpg']
+                        },
+                        {
+                            img: "./img-BB/DBI-41.jpg",
+                            name: "NO:DBI-41",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "DBI-41",
+                            images: ['./img-BB/DBI-41.jpg']
+                        },
+                        {
+                            img: "./img-BB/DBI-45.jpg",
+                            name: "NO:DBI-45",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "DBI-45",
+                            images: ['./img-BB/DBI-45.jpg']
+                        },
+                        {
+                            img: "./img-BB/FDBI-15.jpg",
+                            name: "NO:FDBI-15",
+                            price: { single: 1200, wholesale: 900, threshold: 3 },
+                            id: "FDBI-15",
+                            images: ['./img-BB/FDBI-15.jpg']
+                        },
+                        {
+                            img: "./img-BB/FDBI-31.jpg",
+                            name: "NO:FDBI-31",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "FDBI-31",
+                            images: ['./img-BB/FDBI-31.jpg']
+                        },
+                        {
+                            img: "./img-BB/FDBI-32.jpg",
+                            name: "NO:FDBI-32",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "FDBI-32",
+                            images: ['./img-BB/FDBI-32.jpg']
+                        },
+                        {
+                            img: "./img-BB/FDBI-34.jpg",
+                            name: "NO:FDBI-34",
+                            price: { single: 1400, wholesale: 1100, threshold: 3 },
+                            id: "FDBI-34",
+                            images: ['./img-BB/FDBI-34.jpg']
+                        },
+                        {
+                            img: "./img-BB/FDBI-37.jpg",
+                            name: "NO:FDBI-37",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "FDBI-37",
+                            images: ['./img-BB/FDBI-37.jpg']
+                        },
+                        {
+                            img: "./img-BB/FDBI-39.jpg",
+                            name: "NO:FDBI-39",
+                            price: { single: 1500, wholesale: 1200, threshold: 3 },
+                            id: "FDBI-39",
+                            images: ['./img-BB/FDBI-39.jpg']
+                        },
+                        {
+                            img: "./img-BB/FDBI-41.jpg",
+                            name: "NO:FDBI-41",
+                            price: { single: 1500, wholesale: 1200, threshold: 3 },
+                            id: "FDBI-41",
+                            images: ['./img-BB/FDBI-41.jpg']
+                        }
+
                     ],
                     Handbag: [
-                        { img: "./img-BB/13-23.jpg", name: "NO:13-23", price: "JMD:1200/1500", id: "13-23", images: ['./img-BB/13-23.jpg'] },
-                        { img: "./img-BB/13-49.jpg", name: "NO:13-49", price: "JMD:1200/1500", id: "13-49", images: ['./img-BB/13-49.jpg'] },
-                        { img: "./img-BB/22-12.jpg", name: "NO:22-12", price: "JMD:1200/1500", id: "22-12", images: ['./img-BB/22-12.jpg'] },
-                        { img: "./img-BB/22-17.jpg", name: "NO:22-17", price: "JMD:1200/1500", id: "22-17", images: ['./img-BB/22-17.jpg'] },
-                        { img: "./img-BB/22-21.jpg", name: "NO:22-21", price: "JMD:1200/1500", id: "22-21", images: ['./img-BB/22-21.jpg'] },
-                        { img: "./img-BB/22-30.jpg", name: "NO:22-30", price: "JMD:1200/1500", id: "22-30", images: ['./img-BB/22-30.jpg'] },
-                        { img: "./img-BB/22-56.jpg", name: "NO:22-56", price: "JMD:1200/1500", id: "22-56", images: ['./img-BB/22-56.jpg'] },
-                        { img: "./img-BB/22-57.jpg", name: "NO:22-57", price: "JMD:1200/1500", id: "22-57", images: ['./img-BB/22-57.jpg'] },
-                        { img: "./img-BB/22-69.jpg", name: "NO:22-69", price: "JMD:1200/1500", id: "22-69", images: ['./img-BB/22-69.jpg'] },
-                        { img: "./img-BB/22-78.jpg", name: "NO:22-78", price: "JMD:1200/1500", id: "22-78", images: ['./img-BB/22-78.jpg'] },
+                        {
+                            img: "./img-BB/13-23.jpg",
+                            name: "NO:13-23",
+                            price: { single: 1300, wholesale: 900, threshold: 3 },
+                            id: "13-23",
+                            images: ['./img-BB/13-23.jpg']
+                        },
+                        {
+                            img: "./img-BB/13-49.jpg",
+                            name: "NO:13-49",
+                            price: { single: 1500, wholesale: 1200, threshold: 3 },
+                            id: "13-49",
+                            images: ['./img-BB/13-49.jpg']
+                        },
+                        {
+                            img: "./img-BB/22-12.jpg",
+                            name: "NO:22-12",
+                            price: { single: 1500, wholesale: 1200, threshold: 3 },
+                            id: "22-12",
+                            images: ['./img-BB/22-12.jpg']
+                        },
+                        {
+                            img: "./img-BB/22-17.jpg",
+                            name: "NO:22-17",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "22-17",
+                            images: ['./img-BB/22-17.jpg']
+                        },
+                        {
+                            img: "./img-BB/22-21.jpg",
+                            name: "NO:22-21",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "22-21",
+                            images: ['./img-BB/22-21.jpg']
+                        },
+                        {
+                            img: "./img-BB/22-30.jpg",
+                            name: "NO:22-30",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "22-30",
+                            images: ['./img-BB/22-30.jpg']
+                        },
+                        {
+                            img: "./img-BB/22-56.jpg",
+                            name: "NO:22-56",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "22-56",
+                            images: ['./img-BB/22-56.jpg']
+                        },
+                        {
+                            img: "./img-BB/22-57.jpg",
+                            name: "NO:22-57",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "22-57",
+                            images: ['./img-BB/22-57.jpg']
+                        },
+                        {
+                            img: "./img-BB/22-69.jpg",
+                            name: "NO:22-69",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "22-69",
+                            images: ['./img-BB/22-69.jpg']
+                        },
+                        {
+                            img: "./img-BB/22-78.jpg",
+                            name: "NO:22-78",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "22-78",
+                            images: ['./img-BB/22-78.jpg']
+                        }
+                    ],
+                    Beachbag: [
+                        {
+                            img: "./img-BB/CAOBIAN.jpg",
+                            name: "NO:CAOBIAN",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "CAOBIAN",
+                            images: ['./img-BB/CAOBIAN.jpg']
+                        },
+                        {
+                            img: "./img-BB/13-97.jpg",
+                            name: "NO:13-97",
+                            price: { single: 1000, wholesale: 800, threshold: 3 },
+                            id: "13-97",
+                            images: ['./img-BB/13-97.jpg']
+                        },
+                        {
+                            img: "./img-BB/13-102.jpg",
+                            name: "NO:13-102",
+                            price: { single: 1000, wholesale: 800, threshold: 3 },
+                            id: "13-102",
+                            images: ['./img-BB/13-102.jpg', './img-BB/13-102-1.jpg', './img-BB/13-102-2.jpg', './img-BB/13-102-3.jpg']
+                        },
+                        {
+                            img: "./img-BB/13-107-1.jpg",
+                            name: "NO:13-107-1",
+                            price: { single: 1000, wholesale: 800, threshold: 3 },
+                            id: "13-107-1",
+                            images: ['./img-BB/13-107-1.jpg', './img-BB/13-107-2.jpg', './img-BB/13-107-3.jpg']
+                        },
+                        {
+                            img: "./img-BB/13-108-1.jpg",
+                            name: "NO:13-108-1",
+                            price: { single: 1000, wholesale: 800, threshold: 3 },
+                            id: "13-108-1",
+                            images: ['./img-BB/13-108-1.jpg', './img-BB/13-108-2.jpg', './img-BB/13-108-3.jpg', './img-BB/13-108-4.jpg']
+                        },
+                        {
+                            img: "./img-BB/13-109-1.jpg",
+                            name: "NO:13-109-1",
+                            price: { single: 1000, wholesale: 800, threshold: 3 },
+                            id: "13-109-1",
+                            images: ['./img-BB/13-109-1.jpg', './img-BB/13-109-2.jpg']
+                        }
+                    ],
+                    Fabricbag: [
+                        {
+                            img: "./img-BB/12-28.jpg",
+                            name: "NO:12-28",
+                            price: { single: 1200, wholesale: 900, threshold: 3 },
+                            id: "12-28",
+                            images: ['./img-BB/12-28.jpg']
+                        },
+                        {
+                            img: "./img-BB/DBI-41.jpg",
+                            name: "NO:DBI-41",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "DBI-41",
+                            images: ['./img-BB/DBI-41.jpg']
+                        },
+                        {
+                            img: "./img-BB/DBI-45.jpg",
+                            name: "NO:DBI-45",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "DBI-45",
+                            images: ['./img-BB/DBI-45.jpg']
+                        },
+                        {
+                            img: "./img-BB/FDBI-15.jpg",
+                            name: "NO:FDBI-15",
+                            price: { single: 1200, wholesale: 900, threshold: 3 },
+                            id: "FDBI-15",
+                            images: ['./img-BB/FDBI-15.jpg']
+                        },
+                        {
+                            img: "./img-BB/FDBI-31.jpg",
+                            name: "NO:FDBI-31",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "FDBI-31",
+                            images: ['./img-BB/FDBI-31.jpg']
+                        },
+                        {
+                            img: "./img-BB/FDBI-32.jpg",
+                            name: "NO:FDBI-32",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "FDBI-32",
+                            images: ['./img-BB/FDBI-32.jpg']
+                        },
+                        {
+                            img: "./img-BB/FDBI-34.jpg",
+                            name: "NO:FDBI-34",
+                            price: { single: 1400, wholesale: 1100, threshold: 3 },
+                            id: "FDBI-34",
+                            images: ['./img-BB/FDBI-34.jpg']
+                        },
+                        {
+                            img: "./img-BB/FDBI-37.jpg",
+                            name: "NO:FDBI-37",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "FDBI-37",
+                            images: ['./img-BB/FDBI-37.jpg']
+                        },
+                        {
+                            img: "./img-BB/FDBI-39.jpg",
+                            name: "NO:FDBI-39",
+                            price: { single: 1500, wholesale: 1200, threshold: 3 },
+                            id: "FDBI-39",
+                            images: ['./img-BB/FDBI-39.jpg']
+                        },
+                        {
+                            img: "./img-BB/FDBI-41.jpg",
+                            name: "NO:FDBI-41",
+                            price: { single: 1500, wholesale: 1200, threshold: 3 },
+                            id: "FDBI-41",
+                            images: ['./img-BB/FDBI-41.jpg']
+                        }
+                    ],
+                    Shoulderbag: [
+                        {
+                            img: "./img-BB/25.jpg",
+                            name: "NO:25",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "25",
+                            images: ['./img-BB/25.jpg']
+                        },
+                        {
+                            img: "./img-BB/26.jpg",
+                            name: "NO:26",
+                            price: { single: 1000, wholesale: 800, threshold: 3 },
+                            id: "26",
+                            images: ['./img-BB/26.jpg']
+                        },
+                        {
+                            img: "./img-BB/27.jpg",
+                            name: "NO:27",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "27",
+                            images: ['./img-BB/27.jpg']
+                        },
+                        {
+                            img: "./img-BB/28.jpg",
+                            name: "NO:28",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "28",
+                            images: ['./img-BB/28.jpg']
+                        },
+                        {
+                            img: "./img-BB/132-1.jpg",
+                            name: "NO:132-1",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "132-1",
+                            images: ['./img-BB/132-1.jpg']
+                        },
+                        {
+                            img: "./img-BB/133-1.jpg",
+                            name: "NO:133-1",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "133-1",
+                            images: ['./img-BB/133-1.jpg']
+                        },
+                        {
+                            img: "./img-BB/139-1.jpg",
+                            name: "NO:139-1",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "139-1",
+                            images: ['./img-BB/139-1.jpg']
+                        },
+                        {
+                            img: "./img-BB/305-1.jpg",
+                            name: "NO:305-1",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "305-1",
+                            images: ['./img-BB/305-1.jpg']
+                        },
+                        {
+                            img: "./img-BB/307-1.jpg",
+                            name: "NO:307-1",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "307-1",
+                            images: ['./img-BB/307-1.jpg']
+                        },
+                        {
+                            img: "./img-BB/308-1.jpg",
+                            name: "NO:308-1",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "308-1",
+                            images: ['./img-BB/308-1.jpg']
+                        },
+                        {
+                            img: "./img-BB/604.jpg",
+                            name: "NO:604",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "604",
+                            images: ['./img-BB/604.jpg']
+                        },
+                        {
+                            img: "./img-BB/604.jpg",
+                            name: "NO:605",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "605",
+                            images: ['./img-BB/605.jpg']
+                        },
+                        {
+                            img: "./img-BB/C202-1.jpg",
+                            name: "NO:C202-1",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "C202-1",
+                            images: ['./img-BB/C202-1.jpg']
+                        },
+                        {
+                            img: "./img-BB/C203-1.jpg",
+                            name: "NO:C203-1",
+                            price: { single: 1300, wholesale: 1000, threshold: 3 },
+                            id: "C203-1",
+                            images: ['./img-BB/C203-1.jpg']
+                        },
                     ]
                 }
             },
             jewelry: {
-                subCats: ['All', 'Necklace', 'Bracelet', 'Earrings', 'Ring'],
+                subCats: ['All'],
                 products: {
                     All: [
-                        { img: "./img/哈士奇.jpg", name: "Versatile White Shoes", price: "129", id: "jewelry-1", images: ['./img/哈士奇-1.jpg', './img/哈士奇-2.jpg'] },
-                        { img: "./img/熊猫.jpg", name: "Fashion Shoulder Bag", price: "159", id: "jewelry-2", images: ['./img/熊猫-1.jpg', './img/熊猫-2.jpg', './img/熊猫-3.jpg'] },
-                        { img: "./img/大香蕉.jpg", name: "Thick-soled Dad Shoes", price: "179", id: "jewelry-3", images: ['./img/大香蕉-1.jpg'] },
-                        { img: "./img/熊猫.jpg", name: "Leisure Backpack", price: "99", id: "jewelry-4", images: ['./img/熊猫-4.jpg', './img/熊猫-5.jpg'] }
+                        {
+                            img: "./img/熊猫.jpg",
+                            name: "Leisure Backpack",
+                            price: { single: 129, wholesale: 99, threshold: 3 },
+                            id: "jewelry-4",
+                            images: ['./img/熊猫-4.jpg', './img/熊猫-5.jpg']
+                        }
                     ],
-                    Necklace: [
-                        { img: "./img/哈士奇.jpg", name: "Versatile White Shoes", price: "129", id: "jewelry-1", images: ['./img/哈士奇-1.jpg', './img/哈士奇-2.jpg'] }
-                    ],
-                    Bracelet: [
-                        { img: "./img/熊猫.jpg", name: "Fashion Shoulder Bag", price: "159", id: "jewelry-2", images: ['./img/熊猫-1.jpg', './img/熊猫-2.jpg', './img/熊猫-3.jpg'] }
-                    ],
-                    Earrings: [
-                        { img: "./img/大香蕉.jpg", name: "Thick-soled Dad Shoes", price: "179", id: "jewelry-3", images: ['./img/大香蕉-1.jpg'] }
-                    ],
-                    Ring: [
-                        { img: "./img/熊猫.jpg", name: "Leisure Backpack", price: "99", id: "jewelry-4", images: ['./img/熊猫-4.jpg', './img/熊猫-5.jpg'] }
-                    ]
                 }
             },
             Hat: {
-                subCats: ['All', 'Baseball', 'Bucket', 'Beanie', 'Cap'],
+                subCats: ['All'],
                 products: {
                     All: [
-                        { img: "./img/哈士奇.jpg", name: "Smart Rice Cooker", price: "299", id: "hat-1", images: ['./img/哈士奇-3.jpg', './img/哈士奇-4.jpg'] },
-                        { img: "./img/熊猫.jpg", name: "Wireless Vacuum Cleaner", price: "499", id: "hat-2", images: ['./img/熊猫-6.jpg', './img/熊猫-7.jpg', './img/熊猫-8.jpg'] },
-                        { img: "./img/大香蕉.jpg", name: "Rechargeable Electric Toothbrush", price: "129", id: "hat-3", images: ['./img/大香蕉-2.jpg'] },
-                        { img: "./img/熊猫.jpg", name: "Multifunctional Air Fryer", price: "329", id: "hat-4", images: ['./img/熊猫-9.jpg', './img/熊猫-10.jpg'] }
+                        {
+                            img: "./img/哈士奇.jpg",
+                            name: "Smart Rice Cooker",
+                            price: { single: 349, wholesale: 299, threshold: 2 },
+                            id: "hat-1",
+                            images: ['./img/哈士奇-3.jpg', './img/哈士奇-4.jpg']
+                        },
+                        {
+                            img: "./img/熊猫.jpg",
+                            name: "Multifunctional Air Fryer",
+                            price: { single: 379, wholesale: 329, threshold: 2 },
+                            id: "hat-4",
+                            images: ['./img/熊猫-9.jpg', './img/熊猫-10.jpg']
+                        }
                     ],
-                    Baseball: [
-                        { img: "./img/哈士奇.jpg", name: "Smart Rice Cooker", price: "299", id: "hat-1", images: ['./img/哈士奇-3.jpg', './img/哈士奇-4.jpg'] }
-                    ],
-                    Bucket: [
-                        { img: "./img/熊猫.jpg", name: "Wireless Vacuum Cleaner", price: "499", id: "hat-2", images: ['./img/熊猫-6.jpg', './img/熊猫-7.jpg', './img/熊猫-8.jpg'] }
-                    ],
-                    Beanie: [
-                        { img: "./img/大香蕉.jpg", name: "Rechargeable Electric Toothbrush", price: "129", id: "hat-3", images: ['./img/大香蕉-2.jpg'] }
-                    ],
-                    Cap: [
-                        { img: "./img/熊猫.jpg", name: "Multifunctional Air Fryer", price: "329", id: "hat-4", images: ['./img/熊猫-9.jpg', './img/熊猫-10.jpg'] }
-                    ]
                 }
             },
             Backpack: {
-                subCats: ['All', 'School', 'Travel', 'Sports', 'Business'],
+                subCats: ['All'],
                 products: {
                     All: [
-                        { img: "./img/哈士奇.jpg", name: "Fresh Cream Strawberries", price: "49", id: "backpack-1", images: ['./img/哈士奇-5.jpg', './img/哈士奇-6.jpg'] },
-                        { img: "./img/熊猫.jpg", name: "Farm Raised Eggs", price: "39", id: "backpack-2", images: ['./img/熊猫-11.jpg', './img/熊猫-12.jpg', './img/熊猫-13.jpg'] },
-                        { img: "./img/大香蕉.jpg", name: "Fresh Deep Sea Prawns", price: "129", id: "backpack-3", images: ['./img/大香蕉-3.jpg'] },
-                        { img: "./img/熊猫.jpg", name: "Original Cut Snow Beef", price: "199", id: "backpack-4", images: ['./img/熊猫-14.jpg', './img/熊猫-15.jpg'] }
+                        {
+                            img: "./img/熊猫.jpg",
+                            name: "Original Cut Snow Beef",
+                            price: { single: 229, wholesale: 199, threshold: 4 },
+                            id: "backpack-4",
+                            images: ['./img/熊猫-14.jpg', './img/熊猫-15.jpg']
+                        }
                     ],
-                    School: [
-                        { img: "./img/哈士奇.jpg", name: "Fresh Cream Strawberries", price: "49", id: "backpack-1", images: ['./img/哈士奇-5.jpg', './img/哈士奇-6.jpg'] }
-                    ],
-                    Travel: [
-                        { img: "./img/熊猫.jpg", name: "Farm Raised Eggs", price: "39", id: "backpack-2", images: ['./img/熊猫-11.jpg', './img/熊猫-12.jpg', './img/熊猫-13.jpg'] }
-                    ],
-                    Sports: [
-                        { img: "./img/大香蕉.jpg", name: "Fresh Deep Sea Prawns", price: "129", id: "backpack-3", images: ['./img/大香蕉-3.jpg'] }
-                    ],
-                    Business: [
-                        { img: "./img/熊猫.jpg", name: "Original Cut Snow Beef", price: "199", id: "backpack-4", images: ['./img/熊猫-14.jpg', './img/熊猫-15.jpg'] }
-                    ]
                 }
             }
         };
@@ -1056,7 +1543,7 @@
             renderCatGoods(currentCat, currentSubCat);
         }
 
-        // 渲染分类商品列表（无改动，复用原有逻辑，点击时会传递包含images的商品数据）
+        // 渲染分类商品列表（适配新的价格对象结构）
         function renderCatGoods(catName, subCatName) {
             const list = document.getElementById('catList');
             list.innerHTML = '';
@@ -1068,7 +1555,8 @@
                     <img src="${goods.img}" class="cat-goods-img" alt="${goods.name}" onerror="this.src='https://via.placeholder.com/180x180?text=Product+Image'">
                     <div class="cat-goods-info">
                         <div class="cat-goods-name">${goods.name}</div>
-                        <div class="cat-goods-price">${goods.price}</div>
+                        <div class="cat-goods-price">JMB:${goods.price.single}</div>
+                        <div style="font-size:12px;color:#999;margin-top:4px;">Wholesale price:${goods.price.wholesale} (≥${goods.price.threshold}件)</div>
                     </div>
                 </div>`;
             });
@@ -1132,14 +1620,18 @@
             goToDetailSlide(detailSlideIndex + 1);
         }
 
-        // 商品详情页跳转（无改动，同时支持首页和分类商品的images字段）
+        // 商品详情页跳转（适配新的价格对象结构）
         function goToDetail(goods) {
             if (!goods) return;
             currentGoods = goods;
             // 渲染多图轮播：优先用自定义images，没有则用主图
             renderDetailSwiper(goods.images || [goods.img]);
             document.getElementById('detailName').innerText = goods.name;
-            document.getElementById('detailPrice').innerText = goods.price;
+            // 展示单价+批发价规则
+            document.getElementById('detailPrice').innerHTML = `JMB:${goods.price.single} 
+                <span style="font-size:14px;color:#666;font-weight:normal;margin-left:10px;">
+                    Wholesale price: ${goods.price.wholesale} (≥${goods.price.threshold}件)
+                </span>`;
             navigateTo('detail');
         }
 
@@ -1221,12 +1713,15 @@
             calculateCartTotal();
         }
 
-        // 计算购物车总价
+        // 计算购物车总价（核心：自动判断批发价/单价）
         function calculateCartTotal() {
             let total = 0;
             cartItems.forEach(item => {
-                const m = item.price.match(/\d+/);
-                if (m) total += parseFloat(m[0]) * item.quantity;
+                // 判断是否达到批发阈值
+                const isWholesale = item.quantity >= item.price.threshold;
+                // 取对应价格计算
+                const currentPrice = isWholesale ? item.price.wholesale : item.price.single;
+                total += currentPrice * item.quantity;
             });
             if (document.getElementById('cartTotalPrice')) {
                 document.getElementById('cartTotalPrice').textContent = `JMB: ${total}`;
@@ -1234,7 +1729,7 @@
             return total;
         }
 
-        // 渲染购物车列表
+        // 渲染购物车列表（展示当前价格类型）
         function renderCartList() {
             const cartList = document.getElementById('cartList');
             const empty = document.getElementById('cartEmpty');
@@ -1252,13 +1747,22 @@
             let html = '';
 
             cartItems.forEach(item => {
+                // 判断当前价格类型
+                const isWholesale = item.quantity >= item.price.threshold;
+                const currentPrice = isWholesale ? item.price.wholesale : item.price.single;
+                const priceTypeText = isWholesale ?
+                    `Wholesale price (≥${item.price.threshold}件)` : '单价';
+
                 html += `
                 <div class="cart-item" onclick="openCartItemDetail('${item.id}')">
                     <img src="${item.img}" class="cart-item-img" alt="${item.name}" onerror="this.src='https://via.placeholder.com/80x80?text=Product'">
                     <div class="cart-item-info">
                         <div>
                             <div class="cart-item-name">${item.name}</div>
-                            <div class="cart-item-price">${item.price}</div>
+                            <div class="cart-item-price">JMB:${currentPrice} (${priceTypeText})</div>
+                            <div style="font-size:12px;color:#999;margin-top:2px;">
+                                小计: JMB${currentPrice * item.quantity}
+                            </div>
                         </div>
                         <div class="cart-item-control">
                             <button class="cart-btn" onclick="event.stopPropagation(); decreaseCartItem('${item.id}')">-</button>

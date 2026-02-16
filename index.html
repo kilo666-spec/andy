@@ -32,6 +32,77 @@
             }
         }
 
+        /* 公告弹窗样式 */
+        .notice-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .notice-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .notice-content {
+            background-color: white;
+            width: 90%;
+            max-width: 380px;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transform: translateY(-20px) scale(0.95);
+            transition: all 0.4s ease 0.2s;
+        }
+
+        .notice-modal.show .notice-content {
+            transform: translateY(0) scale(1);
+        }
+
+        .notice-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1E293B;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .notice-text {
+            font-size: 16px;
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .notice-close {
+            width: 100%;
+            padding: 12px 0;
+            background: linear-gradient(135deg, #165DFF 0%, #0F48C9 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .notice-close:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
         .store-box {
             width: 100%;
             max-width: 380px;
@@ -142,10 +213,61 @@
                 opacity: 1;
             }
         }
+
+        /* 优化后的地址样式 - 与按钮明显区分 */
+        .store-address {
+            /* 统一宽度和按钮一致 */
+            width: 100%;
+            max-width: 380px;
+            /* 间距调整 */
+            margin-top: 1rem;
+            padding: 0.8rem 1.2rem;
+            /* 核心差异化设计：细线边框 + 透明背景（区别于按钮的渐变背景） */
+            background-color: transparent;
+            border: 1px solid #e2e8f0;
+            /* 浅灰色细边框 */
+            border-radius: 12px;
+            /* 圆角比按钮小，进一步区分 */
+            box-shadow: none;
+            /* 移除阴影，和按钮的立体阴影区分 */
+            /* 文字样式 */
+            font-size: 14px;
+            color: #64748b;
+            /* 比按钮文字颜色浅，降低视觉权重 */
+            font-weight: 400;
+            /* 常规字重，区别于按钮的粗体 */
+            line-height: 1.5;
+            text-align: center;
+            /* 动画效果，和按钮同步 */
+            transform: translateY(20px);
+            opacity: 0;
+            animation: btnSlideIn 0.6s ease 0.6s forwards;
+        }
+
+        /* 为Mia店铺也添加地址样式（如果需要） */
+        .store-address.mia {
+            animation: btnSlideIn 0.6s ease 0.7s forwards;
+            border-color: #fce7f3;
+            /* Mia店铺地址用粉色系边框，和按钮色调呼应但区分 */
+        }
     </style>
 </head>
 
 <body>
+    <!-- 公告弹窗 -->
+    <div class="notice-modal show" id="noticeModal">
+        <div class="notice-content">
+            <h3 class="notice-title">Store Announcement</h3>
+            <p class="notice-text">
+                Welcome to our store!<br>
+                Business hours: 8:00 AM-5:00 PM<br>
+                <br>
+                The products and prices on this website are for reference only; the actual products and prices are
+                subject to those in physical stores.
+            </p>
+            <button class="notice-close" id="noticeCloseBtn">Got it</button>
+        </div>
+    </div>
 
     <div class="store-box">
         <div class="logo-area andy">
@@ -158,6 +280,11 @@
         <a href="shop1.html" class="enter-btn andy">
             Enter Andy's store
         </a>
+        <!-- 优化后的地址展示 -->
+        <div class="store-address">
+            Store Address: Kingston Downtown orange st 45A
+            WhatsApp:18764835404
+        </div>
     </div>
 
     <div class="store-box">
@@ -171,8 +298,33 @@
         <a href="shop2.html" class="enter-btn mia">
             Enter Mia's store
         </a>
+        <div class="store-address">
+            Store Address: Kingston Downtown Beckford st 3
+            WhatsApp:18763446410
+        </div>
+        <!-- 可以为Mia店铺也添加地址 -->
+        <!-- <div class="store-address mia">
+            Store Address: [Mia's store address here]
+        </div> -->
     </div>
 
+    <script>
+        // 公告弹窗关闭功能
+        const noticeModal = document.getElementById('noticeModal');
+        const noticeCloseBtn = document.getElementById('noticeCloseBtn');
+
+        // 点击关闭按钮隐藏弹窗
+        noticeCloseBtn.addEventListener('click', function () {
+            noticeModal.classList.remove('show');
+        });
+
+        // 可选：点击弹窗外层背景也关闭弹窗
+        noticeModal.addEventListener('click', function (e) {
+            if (e.target === noticeModal) {
+                noticeModal.classList.remove('show');
+            }
+        });
+    </script>
 </body>
 
 </html>
